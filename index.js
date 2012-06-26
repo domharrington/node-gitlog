@@ -55,8 +55,6 @@ function gitlog(options, cb) {
   // Close custom format
   command += '"'
 
-  console.log(command);
-
   exec(command, function(err, stdout, stderr) {
     var commits = stdout.split('\n')
 
