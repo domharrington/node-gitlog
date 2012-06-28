@@ -48,7 +48,7 @@ function gitlog(options, cb) {
 
   // Iterating through the fields and adding them to the custom format
   options.fields.forEach(function(field) {
-    if (!fields[field]) throw new Error('Unknown field: ' + field);
+    if (!fields[field]) throw new Error('Unknown field: ' + field)
     command += delimiter + fields[field]
   })
 
