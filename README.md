@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/domharrington/node-gitlog.png)](http://travis-ci.org/domharrington/node-gitlog)
 node-gitlog
 ===========
 
