@@ -4,7 +4,7 @@
   "description": "Git log parser for Node.JS",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r should -R List"
+    "test": "mocha -r should"
   },
   "repository": {
     "type": "git",
