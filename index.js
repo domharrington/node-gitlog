@@ -55,6 +55,11 @@ function gitlog(options, cb) {
   // Close custom format
   command += '"'
 
+  //Append branch if specified
+  if (options.branch) {
+    command += ' ' + options.branch
+  }
+
   exec(command, function(err, stdout, stderr) {
     var commits = stdout.split('\n')
 
