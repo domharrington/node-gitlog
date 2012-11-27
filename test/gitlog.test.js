@@ -36,6 +36,14 @@ describe('gitlog', function() {
     }).should.throw('Unknown field: ' + field)
   })
 
+  it('returns 20 commits from specified branch', function(done) {
+    gitlog({ repo: testRepoLocation, branch: 'master', number: 100}, function(err, commits) {
+      commits.length.should.equal(20)
+
+      done()
+    })
+  })
+
   it('defaults to 10 commits', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
       commits.length.should.equal(10)
