@@ -43,6 +43,14 @@ function gitlog(options, cb) {
     command += ' --author="' + options.author + '"'
   }
 
+  if (options.since) {
+    command += ' --since="' + options.since + '"'
+  }
+
+  if (options.until) {
+    command += ' --until="' + options.until + '"'
+  }
+
   // Start of custom format
   command += ' --pretty="'
 

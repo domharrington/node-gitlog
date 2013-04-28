@@ -59,6 +59,14 @@ An array of fields to return from the log, here are the possible options:
 
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
 
+### since
+Limit commits to newer than the given value. See [git-log(1)](https://www.kernel.org/pub/software/scm/git/docs/git-log.html) 
+for valid formats. 
+
+### until
+Limit commits to old than the given value.. See [git-log(1)](https://www.kernel.org/pub/software/scm/git/docs/git-log.html) 
+for valid formats. 
+
 ## How it works
 
 This module works by executing a child process (using `child_process.exec()`) to the `git` executable, then parsing the stdout into commits. This is done using the `--pretty` command line option which allows you to provide a custom formatter to `git log`. To enable easy parsing the format is delimited by a tab (`\t`) character.
