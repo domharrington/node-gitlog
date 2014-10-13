@@ -5,6 +5,8 @@ mkdir $REPO
 cd $REPO
 git init --bare
 cd ..
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
 git clone -l $REPO test-repo-clone
 cd test-repo-clone
 
