@@ -1,5 +1,4 @@
-var should = require('should')
-  , gitlog = require('../')
+var gitlog = require('../')
   , exec = require('child_process').exec
   , testRepoLocation = __dirname + '/test-repo-clone'
 
@@ -10,10 +9,11 @@ function execInTestDir(command, cb) {
 describe('gitlog', function() {
 
   before(function(done) {
-    execInTestDir(__dirname + '/delete-repo.sh', function(error, out, err) {
-      execInTestDir(__dirname + '/create-repo.sh', function(error, out, err) {
-        done()
-      })
+    execInTestDir(__dirname + '/delete-repo.sh', function(error) {
+      if (error) {
+        return done(error)
+      }
+      execInTestDir(__dirname + '/create-repo.sh', done)
     })
   })
 

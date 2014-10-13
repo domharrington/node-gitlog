@@ -59,9 +59,10 @@ function gitlog(options, cb) {
   if (options.branch) {
     command += ' ' + options.branch
   }
-  
-  if (options.file)
+
+  if (options.file) {
     command += ' -- '+options.file
+  }
 
   exec(command, function(err, stdout, stderr) {
     var commits = stdout.split('\n')
