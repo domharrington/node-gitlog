@@ -5,8 +5,15 @@ mkdir $REPO
 cd $REPO
 git init --bare
 cd ..
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
+if ! git config --get user.email
+then
+  git config --local user.email "you@example.com"
+fi
+
+if ! git config --get user.name
+then
+  git config --local user.name "Your Name"
+fi
 git clone -l $REPO test-repo-clone
 cd test-repo-clone
 
