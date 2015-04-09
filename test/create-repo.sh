@@ -5,17 +5,10 @@ mkdir $REPO
 cd $REPO
 git init --bare
 cd ..
-if ! git config --get user.email
-then
-  git config --local user.email "you@example.com"
-fi
-
-if ! git config --get user.name
-then
-  git config --local user.name "Your Name"
-fi
 git clone -l $REPO test-repo-clone
 cd test-repo-clone
+git config --local user.email "you@example.com"
+git config --local user.name "Your Name"
 
 for i in {1..20}
   do
