@@ -1,7 +1,7 @@
 module.exports = gitlog
 
 var exec = require('child_process').exec
-  , _ = require('underscore')
+  , extend = require('lodash.assign')
   // The character to split commit fields by in the custom format
   , delimiter = '\t'
   , fields =
@@ -37,7 +37,7 @@ function gitlog(options, cb) {
     }
 
   // Set defaults
-  options = _.extend(defaultOptions, options)
+  options = extend(defaultOptions, options)
 
   // Start constructing command
   var command = 'cd ' + options.repo + ' && git log -n ' + options.number
