@@ -4,34 +4,37 @@ var exec = require('child_process').exec
   , _ = require('underscore')
   // The character to split commit fields by in the custom format
   , delimiter = '\t'
-  , fields = { hash: '%H'
-             , abbrevHash: '%h'
-             , treeHash: '%T'
-             , abbrevTreeHash: '%t'
-             , parentHashes: '%P'
-             , abbrevParentHashes: '%P'
-             , authorName: '%an'
-             , authorEmail: '%ae'
-             , authorDate: '%ai'
-             , authorDateRel: '%ar'
-             , committerName: '%cn'
-             , committerEmail: '%ce'
-             , committerDate: '%cd'
-             , committerDateRel: '%cr'
-             , subject: '%s'
-             }
+  , fields =
+    { hash: '%H'
+    , abbrevHash: '%h'
+    , treeHash: '%T'
+    , abbrevTreeHash: '%t'
+    , parentHashes: '%P'
+    , abbrevParentHashes: '%P'
+    , authorName: '%an'
+    , authorEmail: '%ae'
+    , authorDate: '%ai'
+    , authorDateRel: '%ar'
+    , committerName: '%cn'
+    , committerEmail: '%ce'
+    , committerDate: '%cd'
+    , committerDateRel: '%cr'
+    , subject: '%s'
+    }
 
 function gitlog(options, cb) {
   if (!options.repo) throw new Error('Repo required!')
   if (!cb) throw new Error('Callback required!')
 
-  var defaultOptions= { number: 10
-                      , fields: [ 'abbrevHash'
-                                , 'hash'
-                                , 'subject'
-                                , 'authorName'
-                                ]
-                      }
+  var defaultOptions =
+    { number: 10
+    , fields:
+      [ 'abbrevHash'
+      , 'hash'
+      , 'subject'
+      , 'authorName'
+      ]
+    }
 
   // Set defaults
   options = _.extend(defaultOptions, options)
@@ -55,13 +58,13 @@ function gitlog(options, cb) {
   // Close custom format
   command += '"'
 
-  //Append branch if specified
+  // Append branch if specified
   if (options.branch) {
     command += ' ' + options.branch
   }
 
   if (options.file) {
-    command += ' -- '+options.file
+    command += ' -- ' + options.file
   }
 
   exec(command, function(err, stdout, stderr) {

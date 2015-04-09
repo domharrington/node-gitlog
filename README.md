@@ -1,31 +1,36 @@
-[![build status](https://secure.travis-ci.org/domharrington/node-gitlog.png)](http://travis-ci.org/domharrington/node-gitlog)
-node-gitlog
-===========
+# node-gitlog
 
 Git log parser for Node.JS
 
+[![build status](https://api.travis-ci.org/domharrington/node-gitlog.svg)](http://travis-ci.org/domharrington/node-gitlog)
+[![dependency status](https://david-dm.org/domharrington/node-gitlog.svg)](https://david-dm.org/domharrington/node-gitlog)
+
 ## Installation
 
-     npm install gitlog
+     npm install gitlog --save
 
 ## Usage
 
-     var gitlog = require('../')
-       , options = { repo: __dirname + '/test-repo-folder'
-                   , number: 20
-                   , author: 'Dom Harrington'
-                   , fields: [ 'hash'
-                             , 'abbrevHash'
-                             , 'subject'
-                             , 'authorName'
-                             , 'authorDateRel'
-                             ]
-                   }
+```js
+var gitlog = require('../')
+  , options =
+    { repo: __dirname + '/test-repo-folder'
+    , number: 20
+    , author: 'Dom Harrington'
+    , fields:
+      [ 'hash'
+      , 'abbrevHash'
+      , 'subject'
+      , 'authorName'
+      , 'authorDateRel'
+      ]
+    }
 
-     gitlog(options, function(error, commits) {
-       // Commits is an array of commits in the repo
-       console.log(commits)
-     })
+gitlog(options, function(error, commits) {
+  // Commits is an array of commits in the repo
+  console.log(commits)
+})
+```
 
 ## Options
 

@@ -32,12 +32,12 @@ describe('gitlog', function() {
   it('throws an error when an unknown field is used', function() {
     var field = 'fake-field'
     ; (function() {
-      gitlog({ repo: 'test-repo', fields: [field] }, function() {});
+      gitlog({ repo: 'test-repo', fields: [ field ] }, function() {});
     }).should.throw('Unknown field: ' + field)
   })
 
   it('returns 20 commits from specified branch', function(done) {
-    gitlog({ repo: testRepoLocation, branch: 'master', number: 100}, function(err, commits) {
+    gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
       commits.length.should.equal(20)
 
       done()
@@ -53,12 +53,13 @@ describe('gitlog', function() {
   })
 
   it('returns the fields requested', function(done) {
-    var fields = [ 'hash'
-                 , 'abbrevHash'
-                 , 'treeHash'
-                 , 'authorName'
-                 , 'authorEmail'
-                 ]
+    var fields =
+      [ 'hash'
+      , 'abbrevHash'
+      , 'treeHash'
+      , 'authorName'
+      , 'authorEmail'
+      ]
 
     gitlog({ repo: testRepoLocation, fields: fields }, function(err, commits) {
       commits[0].should.be.a('object')
@@ -69,7 +70,7 @@ describe('gitlog', function() {
   })
 
   it('returns a default set of fields', function(done) {
-    var defaults = ['abbrevHash', 'hash', 'subject', 'authorName']
+    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
 
     gitlog({ repo: testRepoLocation }, function(err, commits) {
       commits[0].should.have.keys(defaults)
@@ -85,12 +86,11 @@ describe('gitlog', function() {
                   '&& git commit -m "New commit" ' +
                   '--author="A U Thor <author@example.com>"'
 
-    var author = 'Dom Harrington'
+      , author = 'Dom Harrington'
 
     // Adding a new commit by different author
     exec(command, function() {
-      gitlog({ repo: testRepoLocation, author: author },
-        function(err, commits) {
+      gitlog({ repo: testRepoLocation, author: author }, function(err, commits) {
 
         commits.forEach(function(commit) {
           commit.authorName.should.equal(author)
