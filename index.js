@@ -32,6 +32,7 @@ function addOptional(command, options) {
       command += ' --' + cmdOptional[i] + '="' + options[cmdOptional[i]] + '"';
     }
   }
+  return command;
 }
 
 function gitlog(options, cb) {
@@ -53,7 +54,7 @@ function gitlog(options, cb) {
   // Start constructing command
   var command = 'cd ' + options.repo + ' && git log -n ' + options.number;
 
-  addOptional(command, options);
+  command = addOptional(command, options);
 
   // Start of custom format
   command += ' --pretty="@begin@';
