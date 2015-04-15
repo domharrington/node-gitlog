@@ -38,7 +38,7 @@ describe('gitlog', function() {
 
   it('returns 20 commits from specified branch', function(done) {
     gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
-      commits.length.should.equal(20)
+      commits.length.should.equal(19)
 
       done()
     })
@@ -46,7 +46,7 @@ describe('gitlog', function() {
 
   it('defaults to 10 commits', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits.length.should.equal(10)
+      commits.length.should.equal(9)
 
       done()
     })
@@ -61,7 +61,7 @@ describe('gitlog', function() {
       , 'authorEmail'
       ]
 
-    gitlog({ repo: testRepoLocation, fields: fields }, function(err, commits) {
+    gitlog({ repo: testRepoLocation, fields: fields,nameStatus:false  }, function(err, commits) {
       commits[0].should.be.a('object')
       commits[0].should.have.keys(fields)
 
@@ -72,12 +72,45 @@ describe('gitlog', function() {
   it('returns a default set of fields', function(done) {
     var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
 
+    gitlog({ repo: testRepoLocation, nameStatus:false }, function(err, commits) {
+      commits[0].should.have.keys(defaults)
+
+      done()
+    })
+  })
+  
+  it('returns nameStatus fields', function(done) {
+    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
+
     gitlog({ repo: testRepoLocation }, function(err, commits) {
       commits[0].should.have.keys(defaults)
 
       done()
     })
   })
+  
+  it('returns fields with "since" limit', function(done) {
+    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
+
+    gitlog({ repo: testRepoLocation,since:'1 minutes ago' }, function(err, commits) {
+      commits.length.should.equal(9)
+
+      done()
+    })
+  })
+  
+  it('returns fields with "before" limit', function(done) {
+    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
+
+    gitlog({ repo: testRepoLocation,before:'2001-12-01' }, function(err, commits) {
+      commits.length.should.equal(0)
+
+      done()
+    })
+  })
+  
+  
+  
 
   it('returns commits only by author', function(done) {
     var command = 'cd ' + testRepoLocation + ' ' +
@@ -94,6 +127,28 @@ describe('gitlog', function() {
 
         commits.forEach(function(commit) {
           commit.authorName.should.equal(author)
+        })
+
+        done()
+      })
+    })
+  })
+  
+  it('returns commits only by commiter', function(done) {
+    var command = 'cd ' + testRepoLocation + ' ' +
+                  '&& touch new-file ' +
+                  '&& git add new-file ' +
+                  '&& git commit -m "New commit" ' +
+                  '--commiter="A U Thor <author@example.com>"'
+
+      , commiter = 'Dom Harrington'
+
+    // Adding a new commit by different author
+    exec(command, function() {
+      gitlog({ repo: testRepoLocation, commiter: commiter }, function(err, commits) {
+
+        commits.forEach(function(commit) {
+          commit.authorName.should.equal(commiter)
         })
 
         done()
