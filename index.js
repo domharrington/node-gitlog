@@ -1,5 +1,6 @@
 module.exports = gitlog;
 var exec = require('child_process').exec,
+  debug=require('debug')('gitlog'),
   extend = require('lodash.assign'),
   delimiter = '\t',
   fields = {
@@ -45,7 +46,8 @@ function gitlog(options, cb) {
 
   var defaultOptions = {
     number: 10,
-    fields: ['abbrevHash', 'hash', 'subject', 'authorName']
+    fields: ['abbrevHash', 'hash', 'subject', 'authorName'],
+    nameStatus:true
   };
 
   // Set defaults
@@ -80,19 +82,20 @@ function gitlog(options, cb) {
   //File and fiel status
   command += ' --name-status';
 
+  debug(command);
   exec(command, function(err, stdout, stderr) {
     var commits = stdout.split('\n@begin@');
 
     // Remove the last blank element from the array
     commits.pop();
 
-    commits = parseCommits(commits, options.fields);
+    commits = parseCommits(commits, options.fields,options.nameStatus);
 
     cb(stderr || err, commits);
   });
 }
 
-function parseCommits(commits, fields) {
+function parseCommits(commits, fields,nameStatus) {
   return commits.map(function(commit) {
     var parts = commit.split('@end@\n\n');
     commit = parts[0].split(delimiter);
@@ -105,17 +108,21 @@ function parseCommits(commits, fields) {
     commit.shift();
 
     var parsed = {};
-
+    debug(commit);
     commit.forEach(function(commitField, index) {
       if (fields[index]) {
         parsed[fields[index]] = commitField;
       } else {
-        var pos = index % notOptFields.length;
+        if(nameStatus){
+            var pos = (index - fields.length)  % notOptFields.length;
 
-        if (!parsed[notOptFields[pos]]) {
-          parsed[notOptFields[pos]] = [];
+            if (!parsed[notOptFields[pos]]) {
+              parsed[notOptFields[pos]] = [];
+            }
+
+            debug('',(index - fields.length) ,notOptFields.length,pos,commitField);
+            parsed[notOptFields[pos]].push(commitField);
         }
-        parsed[notOptFields[pos]].push(commitField);
       }
     });
 
