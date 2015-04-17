@@ -82,10 +82,12 @@ function gitlog(options, cb) {
 
   debug(command);
   exec(command, function(err, stdout, stderr) {
+    debug('stdout',stdout);
     var commits = stdout.split('\n@begin@');
-
-    // Remove the last blank element from the array
-    commits.pop();
+    if (commits.length === 1 && commits[0] === '' ){
+      commits.shift();
+    }
+    debug('commits',commits);
 
     commits = parseCommits(commits, options.fields,options.nameStatus);
 
@@ -101,12 +103,12 @@ function parseCommits(commits, fields,nameStatus) {
     if (parts[1]) {
       commit = commit.concat(parts[1].replace(/\n/g, '\t').split(delimiter));
     }
-
+    debug('commit',commit)
     // Remove the first empty char from the array
     commit.shift();
 
     var parsed = {};
-    debug(commit);
+
     commit.forEach(function(commitField, index) {
       if (fields[index]) {
         parsed[fields[index]] = commitField;

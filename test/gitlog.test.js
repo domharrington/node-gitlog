@@ -39,7 +39,6 @@ describe('gitlog', function() {
   it('returns 20 commits from specified branch', function(done) {
     gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
       commits.length.should.equal(20)
-
       done()
     })
   })
@@ -91,7 +90,7 @@ describe('gitlog', function() {
   it('returns fields with "since" limit', function(done) {
 
     gitlog({ repo: testRepoLocation,since:'1 minutes ago' }, function(err, commits) {
-      commits.length.should.equal(9)
+      commits.length.should.equal(10)
 
       done()
     })
@@ -99,7 +98,7 @@ describe('gitlog', function() {
   it('returns fields with "after" limit', function(done) {
 
     gitlog({ repo: testRepoLocation,after:'1 minutes ago' }, function(err, commits) {
-      commits.length.should.equal(9)
+      commits.length.should.equal(10)
 
       done()
     })
@@ -121,7 +120,8 @@ describe('gitlog', function() {
     })
   })
   it('returns commits only by author', function(done) {
-    var command = 'cd ' + testRepoLocation + ' ' +
+    var defaults = [ 'authorName' ]
+    ,  command = 'cd ' + testRepoLocation + ' ' +
                   '&& touch new-file ' +
                   '&& git add new-file ' +
                   '&& git commit -m "New commit" ' +
@@ -131,7 +131,7 @@ describe('gitlog', function() {
 
     // Adding a new commit by different author
     exec(command, function() {
-      gitlog({ repo: testRepoLocation, author: author }, function(err, commits) {
+      gitlog({ repo: testRepoLocation, author: author, fields: defaults }, function(err, commits) {
 
         commits.forEach(function(commit) {
           commit.authorName.should.equal(author)
@@ -142,7 +142,8 @@ describe('gitlog', function() {
     })
   })
   it('returns commits only by committer', function(done) {
-    var command = 'cd ' + testRepoLocation + ' ' +
+    var defaults = [ 'committerName' ]
+    , command = 'cd ' + testRepoLocation + ' ' +
                   '&& touch new-file ' +
                   '&& git add new-file ' +
                   '&& git commit -m "New commit" ' +
@@ -152,7 +153,7 @@ describe('gitlog', function() {
 
     // Adding a new commit by different author
     exec(command, function() {
-      gitlog({ repo: testRepoLocation, committer: committer }, function(err, commits) {
+      gitlog({ repo: testRepoLocation, committer: committer , fields: defaults }, function(err, commits) {
 
         commits.forEach(function(commit) {
           commit.committerName.should.equal(committer)
