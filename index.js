@@ -27,7 +27,7 @@ var exec = require('child_process').exec
     Add optional parameter to command
 */
 function addOptional(command, options) {
-  var cmdOptional = [ 'author', 'since', 'after', 'until', 'before', 'commiter' ];
+  var cmdOptional = [ 'author', 'since', 'after', 'until', 'before', 'committer' ];
   for (var i = cmdOptional.length; i--;) {
     if (options[cmdOptional[i]]) {
       command += ' --' + cmdOptional[i] + '="' + options[cmdOptional[i]] + '"';

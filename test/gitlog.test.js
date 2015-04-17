@@ -96,9 +96,25 @@ describe('gitlog', function() {
       done()
     })
   })
+  it('returns fields with "after" limit', function(done) {
+
+    gitlog({ repo: testRepoLocation,after:'1 minutes ago' }, function(err, commits) {
+      commits.length.should.equal(9)
+
+      done()
+    })
+  })
   it('returns fields with "before" limit', function(done) {
 
     gitlog({ repo: testRepoLocation,before:'2001-12-01' }, function(err, commits) {
+      commits.length.should.equal(0)
+
+      done()
+    })
+  })
+  it('returns fields with "until" limit', function(done) {
+
+    gitlog({ repo: testRepoLocation,until:'2001-12-01' }, function(err, commits) {
       commits.length.should.equal(0)
 
       done()
@@ -125,21 +141,21 @@ describe('gitlog', function() {
       })
     })
   })
-  it('returns commits only by commiter', function(done) {
+  it('returns commits only by committer', function(done) {
     var command = 'cd ' + testRepoLocation + ' ' +
                   '&& touch new-file ' +
                   '&& git add new-file ' +
                   '&& git commit -m "New commit" ' +
-                  '--commiter="A U Thor <author@example.com>"'
+                  '--committer="A U Thor <author@example.com>"'
 
-      , commiter = 'Dom Harrington'
+      , committer = 'Dom Harrington'
 
     // Adding a new commit by different author
     exec(command, function() {
-      gitlog({ repo: testRepoLocation, commiter: commiter }, function(err, commits) {
+      gitlog({ repo: testRepoLocation, committer: committer }, function(err, commits) {
 
         commits.forEach(function(commit) {
-          commit.authorName.should.equal(commiter)
+          commit.committerName.should.equal(committer)
         })
 
         done()
