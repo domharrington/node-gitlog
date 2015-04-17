@@ -1,24 +1,24 @@
 module.exports = gitlog;
-var exec = require('child_process').exec,
-  debug=require('debug')('gitlog'),
-  extend = require('lodash.assign'),
-  delimiter = '\t',
-  fields = {
-    hash: '%H',
-    abbrevHash: '%h',
-    treeHash: '%T',
-    abbrevTreeHash: '%t',
-    parentHashes: '%P',
-    abbrevParentHashes: '%P',
-    authorName: '%an',
-    authorEmail: '%ae',
-    authorDate: '%ai',
-    authorDateRel: '%ar',
-    committerName: '%cn',
-    committerEmail: '%ce',
-    committerDate: '%cd',
-    committerDateRel: '%cr',
-    subject: '%s'
+var exec = require('child_process').exec
+, debug = require('debug')('gitlog')
+, extend = require('lodash.assign')
+, delimiter = '\t'
+, fields = {
+    hash: '%H'
+    , abbrevHash: '%h'
+    , treeHash: '%T'
+    , abbrevTreeHash: '%t'
+    , parentHashes: '%P'
+    , abbrevParentHashes: '%P'
+    , authorName: '%an'
+    , authorEmail: '%ae'
+    , authorDate: '%ai'
+    , authorDateRel: '%ar'
+    , committerName: '%cn'
+    , committerEmail: '%ce'
+    , committerDate: '%cd'
+    , committerDateRel: '%cr'
+    , subject: '%s'
   }, notOptFields = [
     'status', 'files'
   ];
@@ -27,7 +27,7 @@ var exec = require('child_process').exec,
     Add optional parameter to command
 */
 function addOptional(command, options) {
-  var cmdOptional = ['author', 'since', 'after', 'until', 'before', 'commiter'];
+  var cmdOptional = [ 'author', 'since', 'after', 'until', 'before', 'commiter' ];
   for (var i = cmdOptional.length; i--;) {
     if (options[cmdOptional[i]]) {
       command += ' --' + cmdOptional[i] + '="' + options[cmdOptional[i]] + '"';
@@ -45,9 +45,7 @@ function gitlog(options, cb) {
   }
 
   var defaultOptions = {
-    number: 10,
-    fields: ['abbrevHash', 'hash', 'subject', 'authorName'],
-    nameStatus:true
+    number: 10, fields: [ 'abbrevHash', 'hash', 'subject', 'authorName' ], nameStatus:true
   };
 
   // Set defaults
@@ -113,7 +111,7 @@ function parseCommits(commits, fields,nameStatus) {
       if (fields[index]) {
         parsed[fields[index]] = commitField;
       } else {
-        if(nameStatus){
+        if (nameStatus){
             var pos = (index - fields.length)  % notOptFields.length;
 
             if (!parsed[notOptFields[pos]]) {

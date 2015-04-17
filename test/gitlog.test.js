@@ -38,7 +38,7 @@ describe('gitlog', function() {
 
   it('returns 20 commits from specified branch', function(done) {
     gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
-      commits.length.should.equal(19)
+      commits.length.should.equal(20)
 
       done()
     })
@@ -46,7 +46,7 @@ describe('gitlog', function() {
 
   it('defaults to 10 commits', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits.length.should.equal(9)
+      commits.length.should.equal(10)
 
       done()
     })
@@ -61,7 +61,7 @@ describe('gitlog', function() {
       , 'authorEmail'
       ]
 
-    gitlog({ repo: testRepoLocation, fields: fields,nameStatus:false  }, function(err, commits) {
+    gitlog({ repo: testRepoLocation, fields: fields,nameStatus:false }, function(err, commits) {
       commits[0].should.be.a('object')
       commits[0].should.have.keys(fields)
 
@@ -78,7 +78,6 @@ describe('gitlog', function() {
       done()
     })
   })
-  
   it('returns nameStatus fields', function(done) {
     var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
 
@@ -88,9 +87,8 @@ describe('gitlog', function() {
       done()
     })
   })
-  
+
   it('returns fields with "since" limit', function(done) {
-    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
 
     gitlog({ repo: testRepoLocation,since:'1 minutes ago' }, function(err, commits) {
       commits.length.should.equal(9)
@@ -98,9 +96,7 @@ describe('gitlog', function() {
       done()
     })
   })
-  
   it('returns fields with "before" limit', function(done) {
-    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
 
     gitlog({ repo: testRepoLocation,before:'2001-12-01' }, function(err, commits) {
       commits.length.should.equal(0)
@@ -108,10 +104,6 @@ describe('gitlog', function() {
       done()
     })
   })
-  
-  
-  
-
   it('returns commits only by author', function(done) {
     var command = 'cd ' + testRepoLocation + ' ' +
                   '&& touch new-file ' +
@@ -133,7 +125,6 @@ describe('gitlog', function() {
       })
     })
   })
-  
   it('returns commits only by commiter', function(done) {
     var command = 'cd ' + testRepoLocation + ' ' +
                   '&& touch new-file ' +
