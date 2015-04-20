@@ -34,16 +34,32 @@ gitlog(options, function(error, commits) {
 
 ## Options
 
+See [git log](http://git-scm.com/docs/git-log)
+
 ### repo
 The location of the repo, required field.
 
 ### number
 The number of commits to return, defaults to 10.
 
-### author
-The author who's commits to return.
+### since/after
+Show commits more recent than a specific date.
 
-### fields
+### until/before
+Show commits older than a specific date.
+
+### author/committer
+Limit the commits output to ones with author/committer header lines that match the specified pattern.
+
+### nameStatus
+Below fields was returned from the log:
+
+- files - changed files names (array)
+- status - changed files status (array)
+
+This option is enabled by default.
+
+### optional fields
 An array of fields to return from the log, here are the possible options:
 
 - hash - the long hash of the commit e.g. 7dd0b07625203f69cd55d779d873f1adcffaa84a
@@ -62,8 +78,30 @@ An array of fields to return from the log, here are the possible options:
 - committerDateRel - relative committer date
 - subject - commit message
 
+
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
 
 ## How it works
 
 This module works by executing a child process (using `child_process.exec()`) to the `git` executable, then parsing the stdout into commits. This is done using the `--pretty` command line option which allows you to provide a custom formatter to `git log`. To enable easy parsing the format is delimited by a tab (`\t`) character.
+
+## Example
+```javascript
+  { hash: '6a7ef5e3b3d9c77743140443c8f9e792b0715721',
+    abbrevHash: '6a7ef5e',
+    treeHash: 'f1bf51b15b48a00c33727f364afef695029864c0',
+    abbrevTreeHash: 'f1bf51b',
+    parentHashes: 'cfe06dbdb8d0a193640977e016a04678f8f3b04f',
+    abbrevParentHashes: 'cfe06dbdb8d0a193640977e016a04678f8f3b04f',
+    authorName: 'Dom Harrington',
+    authorEmail: 'dom@harringtonxxxxx',
+    authorDate: '2015-04-09 09:39:23 +0100',
+    authorDateRel: '6 days ago',
+    committerName: 'Dom Harrington',
+    committerEmail: 'dom@harringtonxxxxx',
+    committerDate: 'Thu Apr 9 09:39:23 2015 +0100',
+    committerDateRel: '6 days ago',
+    subject: '1.0.0',
+    status: [ 'M' ],
+    files: [ 'package.json' ] }
+```
