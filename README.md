@@ -32,7 +32,7 @@ gitlog(options, function(error, commits) {
 })
 ```
 
-## Options 
+## Options
 
 See [git log](http://git-scm.com/docs/git-log)
 
@@ -48,11 +48,11 @@ Show commits more recent than a specific date.
 ### until/before
 Show commits older than a specific date.
 
-### author/commiter
-Limit the commits output to ones with author/committer header lines that match the specified pattern. 
+### author/committer
+Limit the commits output to ones with author/committer header lines that match the specified pattern.
 
 ### nameStatus
-Below fields was returned from the log: 
+Below fields was returned from the log:
 
 - files - changed files names (array)
 - status - changed files status (array)
