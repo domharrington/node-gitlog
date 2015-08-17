@@ -12,7 +12,7 @@ Git log parser for Node.JS
 ## Usage
 
 ```js
-var gitlog = require('../')
+var gitlog = require('gitlog')
   , options =
     { repo: __dirname + '/test-repo-folder'
     , number: 20
