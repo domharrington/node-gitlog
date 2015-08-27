@@ -76,7 +76,8 @@ An array of fields to return from the log, here are the possible options:
 - committerEmail - committer email
 - committerDate - committer date
 - committerDateRel - relative committer date
-- subject - commit message
+- subject - commit message (first line)
+- body - full commit message
 
 
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
