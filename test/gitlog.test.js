@@ -29,10 +29,17 @@ describe('gitlog', function() {
     }).should.throw('Callback required!')
   })
 
+  it('throws an error when repo location does not exist', function() {
+    (function() {
+      gitlog({ repo: 'wrong directory' }, function() {})
+    }).should.throw('Repo location does not exist')
+  })
+
+
   it('throws an error when an unknown field is used', function() {
     var field = 'fake-field'
     ; (function() {
-      gitlog({ repo: 'test-repo', fields: [ field ] }, function() {});
+      gitlog({ repo: testRepoLocation, fields: [ field ] }, function() {});
     }).should.throw('Unknown field: ' + field)
   })
 

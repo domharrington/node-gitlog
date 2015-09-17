@@ -49,8 +49,14 @@ function gitlog(options, cb) {
   // Set defaults
   options = extend(defaultOptions, options)
 
-  var prevWorkingDir =  process.cwd();
-  process.chdir(options.repo);
+  var prevWorkingDir =  process.cwd()
+  try {
+    process.chdir(options.repo)
+  }
+  catch (e){
+    throw new Error('Repo location does not exist')
+
+  }
 
   // Start constructing command
   var command = 'git log -n ' + options.number
