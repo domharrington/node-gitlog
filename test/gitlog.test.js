@@ -35,7 +35,6 @@ describe('gitlog', function() {
     }).should.throw('Repo location does not exist')
   })
 
-
   it('throws an error when an unknown field is used', function() {
     var field = 'fake-field'
     ; (function() {
