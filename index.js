@@ -49,8 +49,11 @@ function gitlog(options, cb) {
   // Set defaults
   options = extend(defaultOptions, options)
 
+  var prevWorkingDir =  process.cwd();
+  process.chdir(options.repo);
+
   // Start constructing command
-  var command = 'cd ' + options.repo + ' && git log -n ' + options.number
+  var command = 'git log -n ' + options.number
 
   command = addOptional(command, options)
 
@@ -91,6 +94,8 @@ function gitlog(options, cb) {
 
     cb(stderr || err, commits)
   })
+
+  process.chdir(prevWorkingDir);
 }
 
 function parseCommits(commits, fields,nameStatus) {
