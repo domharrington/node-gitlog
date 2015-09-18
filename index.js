@@ -52,10 +52,8 @@ function gitlog(options, cb) {
   var prevWorkingDir =  process.cwd()
   try {
     process.chdir(options.repo)
-  }
-  catch (e){
+  } catch (e) {
     throw new Error('Repo location does not exist')
-
   }
 
   // Start constructing command
