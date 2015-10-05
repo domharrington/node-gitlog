@@ -83,7 +83,7 @@ function gitlog(options, cb) {
   }
 
   //File and file status
-  command += ' --name-status'
+  command += fileNameAndStatus(options)
 
   debug('command', command)
   exec(command, function(err, stdout, stderr) {
@@ -100,6 +100,10 @@ function gitlog(options, cb) {
   })
 
   process.chdir(prevWorkingDir);
+}
+
+function fileNameAndStatus(options) {
+  return options.nameStatus ? ' --name-status' : '';
 }
 
 function parseCommits(commits, fields,nameStatus) {
