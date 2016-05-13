@@ -88,7 +88,7 @@ function gitlog(options, cb) {
   fileNameAndStatus(args, options)
   debug('args', args)
 
-  childProcess('git', args).then(function (stdout, stderr) {
+  childProcess('git', args, function (stdout, stderr) {
     debug('stdout', stdout)
 
     var commits = stdout.split('\n@begin@')
@@ -104,28 +104,22 @@ function gitlog(options, cb) {
   process.chdir(prevWorkingDir)
 }
 
-function childProcess (program, args) {
-  return new Promise(function (resolve) {
+function childProcess (program, args, callback) {
     var proc = exec.spawn(program, args)
     , stderr = ''
     , stdout = ''
 
-    proc.stdout.on('data', onStdout)
-    proc.stderr.on('data', onStderr)
-    proc.on('close', onClose)
-
-    function onStdout (data) {
+    proc.stdout.on('data', function (data) {
       stdout += String(data).replace(/"/g, '')
-    }
+    })
 
-    function onStderr (data) {
+    proc.stderr.on('data', function (data) {
       stderr += data
-    }
+    })
 
-    function onClose () {
-      resolve(stdout, stderr)
-    }
-  })
+    proc.on('close', function () {
+      callback(stdout, stderr)
+    })
 }
 
 function fileNameAndStatus(args, options) {
