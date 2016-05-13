@@ -1,5 +1,5 @@
 module.exports = gitlog
-var exec = require('child_process').exec
+var exec = require('child_process')
   , debug = require('debug')('gitlog')
   , extend = require('lodash.assign')
   , delimiter = '\t'
@@ -26,14 +26,13 @@ var exec = require('child_process').exec
 /***
     Add optional parameter to command
 */
-function addOptional(command, options) {
+function addOptional(args, options) {
   var cmdOptional = [ 'author', 'since', 'after', 'until', 'before', 'committer' ]
   for (var i = cmdOptional.length; i--;) {
     if (options[cmdOptional[i]]) {
-      command += ' --' + cmdOptional[i] + '="' + options[cmdOptional[i]] + '"'
+      args.push('--' + cmdOptional[i] + '="' + options[cmdOptional[i]] + '"')
     }
   }
-  return command
 }
 
 function gitlog(options, cb) {
@@ -57,37 +56,41 @@ function gitlog(options, cb) {
   }
 
   // Start constructing command
-  var command = 'git log -n ' + options.number
+  var args = []
+  args.push('log')
+  args.push('-n' + options.number)
 
-  command = addOptional(command, options)
+  addOptional(args, options)
 
   // Start of custom format
-  command += ' --pretty="@begin@'
+  var format = '--pretty="@begin@'
 
   // Iterating through the fields and adding them to the custom format
   options.fields.forEach(function(field) {
     if (!fields[field] && field.indexOf(notOptFields) === -1) throw new Error('Unknown field: ' + field)
-    command += delimiter + fields[field]
+    format += delimiter + fields[field]
   })
 
   // Close custom format
-  command += '@end@"'
+  format += '@end@"'
+  args.push(format)
 
   // Append branch if specified
   if (options.branch) {
-    command += ' ' + options.branch
+    args.push(options.branch)
   }
 
   if (options.file) {
-    command += ' -- ' + options.file
+    args.push('-- ' + options.file)
   }
 
   //File and file status
-  command += fileNameAndStatus(options)
+  fileNameAndStatus(args, options)
+  debug('args', args)
 
-  debug('command', command)
-  exec(command, function(err, stdout, stderr) {
-    debug('stdout',stdout)
+  childProcess('git', args).then(function (stdout, stderr) {
+    debug('stdout', stdout)
+
     var commits = stdout.split('\n@begin@')
     if (commits.length === 1 && commits[0] === '' ){
       commits.shift()
@@ -95,15 +98,40 @@ function gitlog(options, cb) {
     debug('commits',commits)
 
     commits = parseCommits(commits, options.fields,options.nameStatus)
-
-    cb(stderr || err, commits)
+    cb(stderr, commits)
   })
 
-  process.chdir(prevWorkingDir);
+  process.chdir(prevWorkingDir)
 }
 
-function fileNameAndStatus(options) {
-  return options.nameStatus ? ' --name-status' : '';
+function childProcess (program, args) {
+  return new Promise(function (resolve) {
+    var proc = exec.spawn(program, args)
+    , stderr = ''
+    , stdout = ''
+
+    proc.stdout.on('data', onStdout)
+    proc.stderr.on('data', onStderr)
+    proc.on('close', onClose)
+
+    function onStdout (data) {
+      stdout += String(data).replace(/"/g, '')
+    }
+
+    function onStderr (data) {
+      stderr += data
+    }
+
+    function onClose () {
+      resolve(stdout, stderr)
+    }
+  })
+}
+
+function fileNameAndStatus(args, options) {
+  if (options.nameStatus) {
+    args.push('--name-status')
+  }
 }
 
 function parseCommits(commits, fields,nameStatus) {
@@ -114,7 +142,6 @@ function parseCommits(commits, fields,nameStatus) {
     if (parts[1]) {
       commit = commit.concat(parts[1].replace(/\n/g, '\t').split(delimiter))
     }
-
     debug('commit', commit)
 
     // Remove the first empty char from the array
@@ -132,13 +159,11 @@ function parseCommits(commits, fields,nameStatus) {
           if (!parsed[notOptFields[pos]]) {
             parsed[notOptFields[pos]] = []
           }
-
           debug('nameStatus', (index - fields.length) ,notOptFields.length,pos,commitField)
           parsed[notOptFields[pos]].push(commitField)
         }
       }
     })
-
     return parsed
   })
 }

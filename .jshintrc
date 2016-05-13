@@ -30,6 +30,7 @@
   , "beforeEach"
   , "after"
   , "afterEach"
+  , "Promise"
   ]
 , "quotmark": "single"
 , "smarttabs": true
