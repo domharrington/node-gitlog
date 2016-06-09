@@ -1,5 +1,6 @@
 module.exports = gitlog
 var exec = require('child_process').exec
+  , execSync = require('child_process').execSync
   , debug = require('debug')('gitlog')
   , extend = require('lodash.assign')
   , delimiter = '\t'
@@ -38,7 +39,7 @@ function addOptional(command, options) {
 
 function gitlog(options, cb) {
   if (!options.repo) throw new Error('Repo required!')
-  if (!cb) throw new Error('Callback required!')
+  //JS if (!cb) throw new Error('Callback required!')
 
   var defaultOptions =
     { number: 10
@@ -86,8 +87,11 @@ function gitlog(options, cb) {
   command += fileNameAndStatus(options)
 
   debug('command', command)
-  exec(command, function(err, stdout, stderr) {
-    debug('stdout',stdout)
+
+  if (!cb) {
+    // run Sync
+    
+    var stdout = execSync(command).toString()
     var commits = stdout.split('\n@begin@')
     if (commits.length === 1 && commits[0] === '' ){
       commits.shift()
@@ -96,10 +100,30 @@ function gitlog(options, cb) {
 
     commits = parseCommits(commits, options.fields,options.nameStatus)
 
-    cb(stderr || err, commits)
-  })
+    process.chdir(prevWorkingDir)
+    
+    return commits;
 
-  process.chdir(prevWorkingDir);
+
+  }else{
+    // standard
+
+    exec(command, function(err, stdout, stderr) {
+      debug('stdout',stdout)
+      var commits = stdout.split('\n@begin@')
+      if (commits.length === 1 && commits[0] === '' ){
+        commits.shift()
+      }
+      debug('commits',commits)
+
+      commits = parseCommits(commits, options.fields,options.nameStatus)
+
+      cb(stderr || err, commits)
+    })
+
+    process.chdir(prevWorkingDir);
+
+  }
 }
 
 function fileNameAndStatus(options) {
