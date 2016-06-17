@@ -39,7 +39,6 @@ function addOptional(command, options) {
 
 function gitlog(options, cb) {
   if (!options.repo) throw new Error('Repo required!')
-  //JS if (!cb) throw new Error('Callback required!')
 
   var defaultOptions =
     { number: 10
@@ -90,8 +89,25 @@ function gitlog(options, cb) {
 
   if (!cb) {
     // run Sync
-    
+
     var stdout = execSync(command).toString()
+      , commits = stdout.split('\n@begin@')
+
+    if (commits.length === 1 && commits[0] === '' ){
+      commits.shift()
+    }
+
+    debug('commits',commits)
+
+    commits = parseCommits(commits, options.fields,options.nameStatus)
+
+    process.chdir(prevWorkingDir)
+
+    return commits
+  }
+
+  exec(command, function(err, stdout, stderr) {
+    debug('stdout',stdout)
     var commits = stdout.split('\n@begin@')
     if (commits.length === 1 && commits[0] === '' ){
       commits.shift()
@@ -100,30 +116,10 @@ function gitlog(options, cb) {
 
     commits = parseCommits(commits, options.fields,options.nameStatus)
 
-    process.chdir(prevWorkingDir)
-    
-    return commits;
+    cb(stderr || err, commits)
+  })
 
-
-  }else{
-    // standard
-
-    exec(command, function(err, stdout, stderr) {
-      debug('stdout',stdout)
-      var commits = stdout.split('\n@begin@')
-      if (commits.length === 1 && commits[0] === '' ){
-        commits.shift()
-      }
-      debug('commits',commits)
-
-      commits = parseCommits(commits, options.fields,options.nameStatus)
-
-      cb(stderr || err, commits)
-    })
-
-    process.chdir(prevWorkingDir);
-
-  }
+  process.chdir(prevWorkingDir);
 }
 
 function fileNameAndStatus(options) {

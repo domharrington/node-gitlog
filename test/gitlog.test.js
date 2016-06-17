@@ -23,12 +23,6 @@ describe('gitlog', function() {
     }).should.throw('Repo required!')
   })
 
-  it('throws an error when cb is not provided', function() {
-    (function() {
-      gitlog({ repo: 'test-repo' })
-    }).should.throw('Callback required!')
-  })
-
   it('throws an error when repo location does not exist', function() {
     (function() {
       gitlog({ repo: 'wrong directory' }, function() {})
@@ -174,6 +168,11 @@ describe('gitlog', function() {
         done()
       })
     })
+  })
+
+  it('returns synchronously if no callback is provided', function () {
+    var commits = gitlog({ repo: testRepoLocation })
+    commits.length.should.equal(10)
   })
 
   after(function(done) {

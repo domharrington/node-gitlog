@@ -6,7 +6,6 @@
   "scripts": {
     "lint": "jshint .",
     "checkStyle": "jscs .",
-    "pretest": "npm run-script lint && npm run-script checkStyle",
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -r should",
     "posttest": "istanbul check-coverage --statements 95 --branches 92 --functions 100 --lines 95 && rm -rf coverage"
   },
