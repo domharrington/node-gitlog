@@ -44,6 +44,7 @@ function gitlog(options, cb) {
     { number: 10
     , fields: [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
     , nameStatus:true
+    , execOptions: {}
     }
 
   // Set defaults
@@ -85,8 +86,8 @@ function gitlog(options, cb) {
   //File and file status
   command += fileNameAndStatus(options)
 
-  debug('command', command)
-  exec(command, function(err, stdout, stderr) {
+  debug('command', options.execOptions, command)
+  exec(command, options.execOptions, function(err, stdout, stderr) {
     debug('stdout',stdout)
     var commits = stdout.split('\n@begin@')
     if (commits.length === 1 && commits[0] === '' ){
