@@ -62,6 +62,11 @@ Below fields was returned from the log:
 
 This option is enabled by default.
 
+### findCopiesHarder
+Much more likely to set status codes to 'C' if files are exact copies of each other.
+
+This option is disabled by default.
+
 ### execOptions
 
 Type: `Object`

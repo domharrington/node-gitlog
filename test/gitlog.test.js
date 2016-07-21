@@ -1,10 +1,22 @@
 var gitlog = require('../')
+  , semver = require('semver')
   , exec = require('child_process').exec
   , testRepoLocation = __dirname + '/test-repo-clone'
+  , gitVer = '1.0.0'
 
 function execInTestDir(command, cb) {
   exec(command, { cwd: __dirname },  cb)
 }
+
+exec('git --version', function(stderr, stdout) {
+  if (!stderr){
+    // Slice version number from returned string
+    gitVer = stdout.split('git version')[1].trim().slice(0, 5);
+
+    // Only care about major/minor/build, any more and semver will error
+    gitVer = gitVer.split('.').slice(0, 3).join('.');
+  }
+});
 
 describe('gitlog', function() {
 
@@ -45,6 +57,7 @@ describe('gitlog', function() {
   it('returns 20 commits from specified branch', function(done) {
     gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
       commits.length.should.equal(20)
+
       done()
     })
   })
@@ -173,6 +186,46 @@ describe('gitlog', function() {
 
         done()
       })
+    })
+  })
+
+  it('returns A status for files that are added', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[0].status[0].should.equal('A')
+      done()
+    })
+  })
+
+  it('returns C100 status for files that are copied', function(done) {
+    gitlog({ repo: testRepoLocation, findCopiesHarder: true }, function(err, commits) {
+      commits[1].status[0].should.equal('C100')
+      done()
+    })
+  })
+
+  it('returns M status for files that are modified', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[2].status[0].should.equal('M')
+      done()
+    })
+  })
+
+  it('returns D status for files that are deleted', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[3].status[0].should.equal('D')
+      done()
+    })
+  })
+
+  it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function(done) {
+    gitlog({ repo: testRepoLocation, number: 100 }, function(err, commits) {
+      if (semver.gte(gitVer, '2.0.0')){
+        commits[4].status[0].should.equal('R100')
+        commits[4].status[1].should.equal('D')
+      } else {
+        commits[4].status[0].should.equal('A')
+      }
+      done()
     })
   })
 
