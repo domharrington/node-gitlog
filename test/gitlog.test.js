@@ -45,6 +45,7 @@ describe('gitlog', function() {
   it('returns 20 commits from specified branch', function(done) {
     gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
       commits.length.should.equal(20)
+
       done()
     })
   })
@@ -173,6 +174,34 @@ describe('gitlog', function() {
 
         done()
       })
+    })
+  })
+
+  it('returns A status for files that are added', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[0].status[0].should.equal('A')
+      done()
+    })
+  })
+
+  it('returns M status for files that are modified', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[1].status[0].should.equal('M')
+      done()
+    })
+  })
+
+  it('returns D status for files that are deleted', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[2].status[0].should.equal('D')
+      done()
+    })
+  })
+
+  it('returns R100 status for files that are renamed (100 is % of similarity)', function(done) {
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits[3].status[0].should.equal('R100')
+      done()
     })
   })
 
