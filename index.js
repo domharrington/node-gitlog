@@ -44,6 +44,7 @@ function gitlog(options, cb) {
     { number: 10
     , fields: [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
     , nameStatus:true
+    , execOptions: {}
     }
 
   // Set defaults
@@ -85,8 +86,8 @@ function gitlog(options, cb) {
   //File and file status
   command += fileNameAndStatus(options)
 
-  debug('command', command)
-  exec(command, function(err, stdout, stderr) {
+  debug('command', options.execOptions, command)
+  exec(command, options.execOptions, function(err, stdout, stderr) {
     debug('stdout',stdout)
     var commits = stdout.split('\n@begin@')
     if (commits.length === 1 && commits[0] === '' ){
@@ -94,7 +95,7 @@ function gitlog(options, cb) {
     }
     debug('commits',commits)
 
-    commits = parseCommits(commits, options.fields,options.nameStatus)
+    commits = parseCommits(commits, options.fields, options.nameStatus)
 
     cb(stderr || err, commits)
   })
@@ -106,13 +107,32 @@ function fileNameAndStatus(options) {
   return options.nameStatus ? ' --name-status' : '';
 }
 
-function parseCommits(commits, fields,nameStatus) {
+function parseCommits(commits, fields, nameStatus) {
   return commits.map(function(commit) {
     var parts = commit.split('@end@\n\n')
+
     commit = parts[0].split(delimiter)
 
     if (parts[1]) {
-      commit = commit.concat(parts[1].replace(/\n/g, '\t').split(delimiter))
+      var parseNameStatus = parts[1].split('\n');
+
+      // Removes last empty char if exists
+      if (parseNameStatus[parseNameStatus.length - 1] === ''){
+        parseNameStatus.pop()
+      }
+
+      // Split each line into it's own delimitered array
+      parseNameStatus.forEach(function(d, i) {
+        parseNameStatus[i] = d.split(delimiter);
+      });
+
+      // 0 will always be status, last will be the filename as it is in the commit,
+      // anything inbetween could be the old name if renamed or copied
+      parseNameStatus = parseNameStatus.reduce(function(a, b) {
+        return a.concat([ b[ 0 ], b[ b.length - 1 ] ]);
+      }, [])
+
+      commit = commit.concat(parseNameStatus)
     }
 
     debug('commit', commit)
@@ -122,16 +142,19 @@ function parseCommits(commits, fields,nameStatus) {
 
     var parsed = {}
 
+    if (nameStatus){
+      // Create arrays for non optional fields if turned on
+      notOptFields.forEach(function(d) {
+        parsed[d] = [];
+      })
+    }
+
     commit.forEach(function(commitField, index) {
       if (fields[index]) {
         parsed[fields[index]] = commitField
       } else {
         if (nameStatus){
-          var pos = (index - fields.length)  % notOptFields.length
-
-          if (!parsed[notOptFields[pos]]) {
-            parsed[notOptFields[pos]] = []
-          }
+          var pos = (index - fields.length) % notOptFields.length
 
           debug('nameStatus', (index - fields.length) ,notOptFields.length,pos,commitField)
           parsed[notOptFields[pos]].push(commitField)
