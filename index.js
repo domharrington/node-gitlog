@@ -1,5 +1,6 @@
 module.exports = gitlog
 var exec = require('child_process').exec
+  , execSync = require('child_process').execSync
   , debug = require('debug')('gitlog')
   , extend = require('lodash.assign')
   , delimiter = '\t'
@@ -38,7 +39,6 @@ function addOptional(command, options) {
 
 function gitlog(options, cb) {
   if (!options.repo) throw new Error('Repo required!')
-  if (!cb) throw new Error('Callback required!')
 
   var defaultOptions =
     { number: 10
@@ -94,6 +94,26 @@ function gitlog(options, cb) {
   command += fileNameAndStatus(options)
 
   debug('command', options.execOptions, command)
+
+  if (!cb) {
+    // run Sync
+
+    var stdout = execSync(command, options.execOptions).toString()
+      , commits = stdout.split('\n@begin@')
+
+    if (commits.length === 1 && commits[0] === '' ){
+      commits.shift()
+    }
+
+    debug('commits',commits)
+
+    commits = parseCommits(commits, options.fields,options.nameStatus)
+
+    process.chdir(prevWorkingDir)
+
+    return commits
+  }
+
   exec(command, options.execOptions, function(err, stdout, stderr) {
     debug('stdout',stdout)
     var commits = stdout.split('\n@begin@')
