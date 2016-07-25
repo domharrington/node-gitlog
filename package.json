@@ -7,7 +7,7 @@
     "lint": "jshint .",
     "checkStyle": "jscs .",
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -r should",
-    "posttest": "istanbul check-coverage --statements 95 --branches 91 --functions 100 --lines 95 && rm -rf coverage"
+    "posttest": "istanbul check-coverage --statements 95 --branches 90 --functions 100 --lines 95 && rm -rf coverage"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
