@@ -86,7 +86,7 @@ function gitlog(options, cb) {
   command += fileNameAndStatus(options)
 
   debug('command', command)
-  exec(command, function(err, stdout, stderr) {
+  exec(command, { maxBuffer: Infinity }, function(err, stdout, stderr) {
     debug('stdout',stdout)
     var commits = stdout.split('\n@begin@')
     if (commits.length === 1 && commits[0] === '' ){
