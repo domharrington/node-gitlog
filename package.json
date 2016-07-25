@@ -8,7 +8,7 @@
     "checkStyle": "jscs .",
     "pretest": "npm run-script lint && npm run-script checkStyle",
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -r should",
-    "posttest": "istanbul check-coverage --statements 95 --branches 92 --functions 100 --lines 95 && rm -rf coverage"
+    "posttest": "istanbul check-coverage --statements 95 --branches 91 --functions 100 --lines 95 && rm -rf coverage"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
@@ -25,11 +25,12 @@
   "author": "Dom Harrington",
   "license": "BSD",
   "devDependencies": {
-    "should": "~0.6.3",
     "istanbul": "^0.3.8",
     "jscs": "^1.6.1",
     "jshint": "^2.5.6",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.1",
+    "semver": "5.3.0",
+    "should": "~0.6.3"
   },
   "dependencies": {
     "debug": "^2.1.3",

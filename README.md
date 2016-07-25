@@ -24,6 +24,9 @@ var gitlog = require('gitlog')
       , 'authorName'
       , 'authorDateRel'
       ]
+    , execOptions:
+      { maxBuffer: 1000 x 1024
+      }
     }
 
 gitlog(options, function(error, commits) {
@@ -59,6 +62,25 @@ Below fields was returned from the log:
 
 This option is enabled by default.
 
+### findCopiesHarder
+Much more likely to set status codes to 'C' if files are exact copies of each other.
+
+This option is disabled by default.
+
+### execOptions
+
+Type: `Object`
+
+Specify some options to be passed to the [.exec()](http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) method:
+
+- `cwd` String *Current working directory of the child process*
+- `env` Object *Environment key-value pairs*
+- `setsid` Boolean
+- `encoding` String *(Default: 'utf8')*
+- `timeout` Number *(Default: 0)*
+- `maxBuffer` Number *(Default: 200\*1024)*
+- `killSignal` String *(Default: 'SIGTERM')*
+
 ### optional fields
 An array of fields to return from the log, here are the possible options:
 
@@ -78,7 +100,6 @@ An array of fields to return from the log, here are the possible options:
 - committerDateRel - relative committer date
 - subject - commit message (first line)
 - body - full commit message
-
 
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
 
