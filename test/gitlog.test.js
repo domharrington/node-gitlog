@@ -1,5 +1,4 @@
 var gitlog = require('../')
-  , semver = require('semver')
   , exec = require('child_process').exec
   , testRepoLocation = __dirname + '/test-repo-clone'
   , gitVer = '1.0.0'
@@ -217,17 +216,20 @@ describe('gitlog', function() {
     })
   })
 
-  it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function(done) {
-    gitlog({ repo: testRepoLocation, number: 100 }, function(err, commits) {
-      if (semver.gte(gitVer, '2.0.0')){
-        commits[4].status[0].should.equal('R100')
-        commits[4].status[1].should.equal('D')
-      } else {
-        commits[4].status[0].should.equal('A')
-      }
-      done()
-    })
-  })
+  // This fails inconsistently on different versions of git
+  // https://github.com/domharrington/node-gitlog/issues/24
+  //
+  // it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function(done) {
+  //   gitlog({ repo: testRepoLocation, number: 100 }, function(err, commits) {
+  //     if (semver.gte(gitVer, '2.0.0')){
+  //       commits[4].status[0].should.equal('R100')
+  //       commits[4].status[1].should.equal('D')
+  //     } else {
+  //       commits[4].status[0].should.equal('A')
+  //     }
+  //     done()
+  //   })
+  // })
 
   after(function(done) {
     execInTestDir(__dirname + '/delete-repo.sh', function() {

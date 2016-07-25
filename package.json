@@ -29,7 +29,6 @@
     "jscs": "^1.6.1",
     "jshint": "^2.5.6",
     "mocha": "^2.2.1",
-    "semver": "5.3.0",
     "should": "~0.6.3"
   },
   "dependencies": {
