@@ -1,6 +1,6 @@
 {
   "name": "gitlog",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Git log parser for Node.JS",
   "main": "index.js",
   "scripts": {
