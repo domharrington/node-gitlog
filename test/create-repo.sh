@@ -42,6 +42,13 @@ cp 3-file copy-file
 git add copy-file
 git commit -m "1 file copied"
 
+# New branch
+git checkout -b new-branch
+touch new-file
+git add new-file
+git commit -m "Added new file on new branch"
+git checkout master
+
 # git symbolic-ref HEAD refs/heads/test-branch
 # rm .git/index
 # git clen -fdx

@@ -54,6 +54,20 @@ describe('gitlog', function() {
     })
   })
 
+  it('returns 20 commits from repository with all=false', function(done) {
+    gitlog({ repo: testRepoLocation, all: false, number: 100 }, function(err, commits) {
+      commits.length.should.equal(20)
+      done()
+    })
+  })
+
+  it('returns 21 commits from repository with all=true', function(done) {
+    gitlog({ repo: testRepoLocation, all: true, number: 100 }, function(err, commits) {
+      commits.length.should.equal(21)
+      done()
+    })
+  })
+
   it('defaults to 10 commits', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
       commits.length.should.equal(10)
