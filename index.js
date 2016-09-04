@@ -45,6 +45,7 @@ function gitlog(options, cb) {
     , fields: [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
     , nameStatus:true
     , findCopiesHarder:false
+    , all:false
     , execOptions: {}
     }
 
@@ -63,6 +64,10 @@ function gitlog(options, cb) {
 
   if (options.findCopiesHarder){
     command += '--find-copies-harder '
+  }
+
+  if (options.all){
+    command += '--all '
   }
 
   command += '-n ' + options.number
