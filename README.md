@@ -67,6 +67,11 @@ Much more likely to set status codes to 'C' if files are exact copies of each ot
 
 This option is disabled by default.
 
+### all
+Find commits on all branches instead of just on the current one.
+
+This option is disabled by default.
+
 ### execOptions
 
 Type: `Object`
