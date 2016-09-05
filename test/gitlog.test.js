@@ -22,43 +22,43 @@ describe('gitlog', function() {
   before(function(done) {
     execInTestDir(__dirname + '/delete-repo.sh', function(error) {
       if (error) {
-        return done(error)
+        return done(error);
       }
-      execInTestDir(__dirname + '/create-repo.sh', done)
+      execInTestDir(__dirname + '/create-repo.sh', done);
     })
   })
 
   it('throws an error when repo is not provided', function() {
     (function() {
       gitlog({}, function() {})
-    }).should.throw('Repo required!')
+    }).should.throw('Repo required!');
   })
 
   it('throws an error when repo location does not exist', function() {
     (function() {
       gitlog({ repo: 'wrong directory' }, function() {})
-    }).should.throw('Repo location does not exist')
+    }).should.throw('Repo location does not exist');
   })
 
   it('throws an error when an unknown field is used', function() {
     var field = 'fake-field'
     ; (function() {
       gitlog({ repo: testRepoLocation, fields: [ field ] }, function() {});
-    }).should.throw('Unknown field: ' + field)
+    }).should.throw('Unknown field: ' + field);
   })
 
   it('returns 20 commits from specified branch', function(done) {
     gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
-      commits.length.should.equal(20)
-      done()
+      commits.length.should.equal(20);
+      done();
     })
   })
 
   it('defaults to 10 commits', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits.length.should.equal(10)
+      commits.length.should.equal(10);
 
-      done()
+      done();
     })
   })
 
@@ -69,69 +69,69 @@ describe('gitlog', function() {
       , 'treeHash'
       , 'authorName'
       , 'authorEmail'
-      ]
+      ];
 
     gitlog({ repo: testRepoLocation, fields: fields, nameStatus: false }, function(err, commits) {
-      commits[0].should.be.a('object')
-      commits[0].should.have.keys(fields)
+      commits[0].should.be.an.Object;
+      (commits[0]).should.have.properties(fields);
 
       done()
     })
   })
 
   it('returns a default set of fields', function(done) {
-    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
+    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName' ];
 
     gitlog({ repo: testRepoLocation, nameStatus: false }, function(err, commits) {
-      commits[0].should.have.keys(defaults)
+      commits[0].should.have.properties(defaults);
 
-      done()
+      done();
     })
   })
 
   it('returns nameStatus fields', function(done) {
-    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ]
+    var defaults = [ 'abbrevHash', 'hash', 'subject', 'authorName', 'status', 'files' ];
 
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[0].should.have.keys(defaults)
+      commits[0].should.have.properties(defaults);
 
-      done()
+      done();
     })
   })
 
   it('returns fields with "since" limit', function(done) {
 
     gitlog({ repo: testRepoLocation, since: '1 minutes ago' }, function(err, commits) {
-      commits.length.should.equal(10)
+      commits.length.should.equal(10);
 
-      done()
+      done();
     })
   })
 
   it('returns fields with "after" limit', function(done) {
 
     gitlog({ repo: testRepoLocation, after: '1 minutes ago' }, function(err, commits) {
-      commits.length.should.equal(10)
+      commits.length.should.equal(10);
 
-      done()
+      done();
     })
   })
 
   it('returns fields with "before" limit', function(done) {
 
     gitlog({ repo: testRepoLocation, before: '2001-12-01' }, function(err, commits) {
-      commits.length.should.equal(0)
+      commits.length.should.equal(0);
 
-      done()
+      done();
     })
   })
 
   it('returns fields with "until" limit', function(done) {
 
     gitlog({ repo: testRepoLocation, until: '2001-12-01' }, function(err, commits) {
-      commits.length.should.equal(0)
+      commits.length.should.equal(0);
 
-      done()
+      done();
     })
   })
 
@@ -150,10 +150,10 @@ describe('gitlog', function() {
       gitlog({ repo: testRepoLocation, author: author, fields: defaults }, function(err, commits) {
 
         commits.forEach(function(commit) {
-          commit.authorName.should.equal(author)
+          commit.authorName.should.equal(author);
         })
 
-        done()
+        done();
       })
     })
   })
@@ -166,46 +166,46 @@ describe('gitlog', function() {
                   '&& git commit -m "New commit" ' +
                   '--committer="A U Thor <author@example.com>"'
 
-      , committer = 'Dom Harrington'
+      , committer = 'Dom Harrington';
 
     // Adding a new commit by different author
     exec(command, function() {
       gitlog({ repo: testRepoLocation, committer: committer, fields: defaults }, function(err, commits) {
 
         commits.forEach(function(commit) {
-          commit.committerName.should.equal(committer)
+          commit.committerName.should.equal(committer);
         })
 
-        done()
+        done();
       })
     })
   })
 
   it('returns A status for files that are added', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[0].status[0].should.equal('A')
-      done()
+      commits[0].status[0].should.equal('A');
+      done();
     })
   })
 
   it('returns C100 status for files that are copied', function(done) {
     gitlog({ repo: testRepoLocation, findCopiesHarder: true }, function(err, commits) {
-      commits[1].status[0].should.equal('C100')
-      done()
+      commits[1].status[0].should.equal('C100');
+      done();
     })
   })
 
   it('returns M status for files that are modified', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[2].status[0].should.equal('M')
-      done()
+      commits[2].status[0].should.equal('M');
+      done();
     })
   })
 
   it('returns D status for files that are deleted', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[3].status[0].should.equal('D')
-      done()
+      commits[3].status[0].should.equal('D');
+      done();
     })
   })
 
@@ -226,12 +226,12 @@ describe('gitlog', function() {
 
   it('returns synchronously if no callback is provided', function () {
     var commits = gitlog({ repo: testRepoLocation })
-    commits.length.should.equal(10)
+    commits.length.should.equal(10);
   })
 
   after(function(done) {
     execInTestDir(__dirname + '/delete-repo.sh', function() {
-      done()
+      done();
     })
   })
 
