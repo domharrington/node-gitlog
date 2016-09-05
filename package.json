@@ -24,7 +24,7 @@
   "author": "Dom Harrington",
   "license": "BSD",
   "engines": {
-      "node": ">=0.11.12" 
+    "node": ">=0.11.12"
   },
   "devDependencies": {
     "istanbul": "^0.4.5",
