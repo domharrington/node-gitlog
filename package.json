@@ -23,6 +23,9 @@
   ],
   "author": "Dom Harrington",
   "license": "BSD",
+  "engines": {
+      "node": ">=0.11.12" 
+  },
   "devDependencies": {
     "istanbul": "^0.3.8",
     "jscs": "^1.6.1",
