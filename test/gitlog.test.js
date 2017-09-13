@@ -243,6 +243,14 @@ describe('gitlog', function() {
     commits.length.should.equal(10)
   })
 
+  it('should allow both body and rawBody', (done) => {
+    var fields = ['body', 'rawBody'];
+    gitlog({ repo: testRepoLocation, number: 1, fields: fields }, function(err, commits) {
+      commits[0].should.have.properties(fields)
+      done()
+    })
+  })
+
   after(function(done) {
     execInTestDir(__dirname + '/delete-repo.sh', function() {
       done()

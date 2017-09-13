@@ -104,7 +104,8 @@ An array of fields to return from the log, here are the possible options:
 - committerDate - committer date
 - committerDateRel - relative committer date
 - subject - commit message (first line)
-- body - full commit message
+- body - commit body
+- rawBody - raw body (subject + body)
 
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
 
