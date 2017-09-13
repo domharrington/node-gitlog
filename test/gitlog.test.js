@@ -243,7 +243,7 @@ describe('gitlog', function() {
     commits.length.should.equal(10)
   })
 
-  it('should allow both body and rawBody', (done) => {
+  it('should allow both body and rawBody', function (done) {
     var fields = ['body', 'rawBody'];
     gitlog({ repo: testRepoLocation, number: 1, fields: fields }, function(err, commits) {
       commits[0].should.have.properties(fields)
