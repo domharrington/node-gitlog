@@ -20,7 +20,7 @@ var exec = require('child_process').exec
     , committerDate: '%cd'
     , committerDateRel: '%cr'
     , subject: '%s'
-    , body: '%B'
+    , body: '%b'
     }
   , notOptFields = [ 'status', 'files' ]
 
