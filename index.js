@@ -87,7 +87,7 @@ function gitlog(options, cb) {
   // Close custom format
   command += '@end@"'
 
-  // Append branch if specified
+  // Append branch (revision range) if specified
   if (options.branch) {
     command += ' ' + options.branch
   }
