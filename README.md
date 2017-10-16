@@ -12,8 +12,9 @@ Git log parser for Node.JS
 ## Usage
 
 ```js
-var gitlog = require('gitlog')
-  , options =
+const gitlog = require('gitlog');
+
+const options =
     { repo: __dirname + '/test-repo-folder'
     , number: 20
     , author: 'Dom Harrington'
@@ -27,12 +28,17 @@ var gitlog = require('gitlog')
     , execOptions:
       { maxBuffer: 1000 x 1024
       }
-    }
+    };
 
+// Asynchronous (with Callback)
 gitlog(options, function(error, commits) {
   // Commits is an array of commits in the repo
   console.log(commits)
-})
+});
+
+// Synchronous
+let commits = gitlog(options);
+console.log(commits);
 ```
 
 ## Options
@@ -71,6 +77,11 @@ This option is disabled by default.
 Find commits on all branches instead of just on the current one.
 
 This option is disabled by default.
+
+### branch ([revision range](https://git-scm.com/docs/git-log#git-log-ltrevisionrangegt))
+Show only commits in the specified branch or revision range. 
+
+By default uses the current branch and defaults to `HEAD` (i.e. the whole history leading to the current commit).
 
 ### execOptions
 

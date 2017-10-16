@@ -47,9 +47,17 @@ describe('gitlog', function() {
     }).should.throw('Unknown field: ' + field)
   })
 
-  it('returns 20 commits from specified branch', function(done) {
-    gitlog({ repo: testRepoLocation, branch: 'master', number: 100 }, function(err, commits) {
-      commits.length.should.equal(20)
+  it('returns 21 commits from specified branch', function(done) {
+    gitlog({ repo: testRepoLocation, branch: 'new-branch', number: 100 }, function(err, commits) {
+      commits.length.should.equal(21)
+      done()
+    })
+  })
+
+  it('returns 1 commit from specified revision range', function(done) {
+    gitlog({ repo: testRepoLocation, branch: 'master..new-branch', number: 100 }, function(err, commits) {
+      commits.length.should.equal(1)
+      commits[0].subject.should.equal('Added new file on new branch')
       done()
     })
   })
