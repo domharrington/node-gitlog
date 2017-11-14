@@ -231,6 +231,26 @@ describe('gitlog', function() {
     })
   })
 
+  it('returns author name correctly', function(done) {
+    var command = 'cd ' + testRepoLocation + ' ' +
+                  '&& git checkout -b new-merge-branch ' +
+                  '&& git commit -m "Commit to be merged" --allow-empty ' +
+                  '&& git checkout master ' +
+                  '&& git merge new-merge-branch ';
+
+    // check status of merge commit
+    exec(command, function() {
+      gitlog({ repo: testRepoLocation }, function(err, commits) {
+
+        commits.forEach(function(commit) {
+            commit.authorName.should.equal('Your Name');
+        })
+
+        done()
+      })
+    })
+  })
+
   // This fails inconsistently on different versions of git
   // https://github.com/domharrington/node-gitlog/issues/24
   //
