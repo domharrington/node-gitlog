@@ -1,6 +1,7 @@
 module.exports = gitlog
 var exec = require('child_process').exec
   , execSync = require('child_process').execSync
+  , existsSync = require('fs').existsSync
   , debug = require('debug')('gitlog')
   , extend = require('lodash.assign')
   , delimiter = '\t'
@@ -40,6 +41,7 @@ function addOptional(command, options) {
 
 function gitlog(options, cb) {
   if (!options.repo) throw new Error('Repo required!')
+  if (!existsSync(options.repo)) throw new Error('Repo location does not exist');
 
   var defaultOptions =
     { number: 10
@@ -47,18 +49,11 @@ function gitlog(options, cb) {
     , nameStatus:true
     , findCopiesHarder:false
     , all:false
-    , execOptions: {}
+    , execOptions: { cwd: options.repo }
     }
 
   // Set defaults
   options = extend(defaultOptions, options)
-
-  var prevWorkingDir =  process.cwd()
-  try {
-    process.chdir(options.repo)
-  } catch (e) {
-    throw new Error('Repo location does not exist')
-  }
 
   // Start constructing command
   var command = 'git log '
@@ -115,8 +110,6 @@ function gitlog(options, cb) {
 
     commits = parseCommits(commits, options.fields,options.nameStatus)
 
-    process.chdir(prevWorkingDir)
-
     return commits
   }
 
@@ -132,8 +125,6 @@ function gitlog(options, cb) {
 
     cb(stderr || err, commits)
   })
-
-  process.chdir(prevWorkingDir);
 }
 
 function fileNameAndStatus(options) {
