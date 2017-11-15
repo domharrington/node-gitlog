@@ -133,12 +133,12 @@ function fileNameAndStatus(options) {
 
 function parseCommits(commits, fields, nameStatus) {
   return commits.map(function(commit) {
-    var parts = commit.split('@end@\n\n')
+    var parts = commit.split('@end@')
 
     commit = parts[0].split(delimiter)
 
     if (parts[1]) {
-      var parseNameStatus = parts[1].split('\n');
+      var parseNameStatus = parts[1].trimLeft().split('\n');
 
       // Removes last empty char if exists
       if (parseNameStatus[parseNameStatus.length - 1] === ''){
