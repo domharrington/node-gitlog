@@ -100,9 +100,9 @@ function gitlog(options, cb) {
     // run Sync
 
     var stdout = execSync(command, options.execOptions).toString()
-      , commits = stdout.split('\n@begin@')
+      , commits = stdout.split('@begin@')
 
-    if (commits.length === 1 && commits[0] === '' ){
+    if (commits[0] === '' ){
       commits.shift()
     }
 
@@ -115,8 +115,8 @@ function gitlog(options, cb) {
 
   exec(command, options.execOptions, function(err, stdout, stderr) {
     debug('stdout',stdout)
-    var commits = stdout.split('\n@begin@')
-    if (commits.length === 1 && commits[0] === '' ){
+    var commits = stdout.split('@begin@')
+    if (commits[0] === '' ){
       commits.shift()
     }
     debug('commits',commits)
