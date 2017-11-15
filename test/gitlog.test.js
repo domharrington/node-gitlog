@@ -19,7 +19,7 @@ exec('git --version', function(stderr, stdout) {
 
 describe('gitlog', function() {
 
-  before(function(done) {
+  beforeEach(function(done) {
     execInTestDir(__dirname + '/delete-repo.sh', function(error) {
       if (error) {
         return done(error)
@@ -212,14 +212,14 @@ describe('gitlog', function() {
 
   it('returns C100 status for files that are copied', function(done) {
     gitlog({ repo: testRepoLocation, findCopiesHarder: true }, function(err, commits) {
-      commits[1].status[0].should.equal('C100')
+      commits[0].status[0].should.equal('C100')
       done()
     })
   })
 
   it('returns M status for files that are modified', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[2].status[0].should.equal('M')
+      commits[1].status[0].should.equal('M')
       done()
     })
   })
