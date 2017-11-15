@@ -226,7 +226,7 @@ describe('gitlog', function() {
 
   it('returns D status for files that are deleted', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[5].status[0].should.equal('D')
+      commits[4].status[0].should.equal('D')
       done()
     })
   })
@@ -249,10 +249,10 @@ describe('gitlog', function() {
   // it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function(done) {
   //   gitlog({ repo: testRepoLocation, number: 100 }, function(err, commits) {
   //     if (semver.gte(gitVer, '2.0.0')){
-  //       commits[4].status[0].should.equal('R100')
-  //       commits[4].status[1].should.equal('D')
+  //       commits[5].status[0].should.equal('R100')
+  //       commits[5].status[1].should.equal('D')
   //     } else {
-  //       commits[4].status[0].should.equal('A')
+  //       commits[5].status[0].should.equal('A')
   //     }
   //     done()
   //   })
