@@ -62,16 +62,16 @@ describe('gitlog', function() {
     })
   })
 
-  it('returns 20 commits from repository with all=false', function(done) {
+  it('returns 22 commits from repository with all=false', function(done) {
     gitlog({ repo: testRepoLocation, all: false, number: 100 }, function(err, commits) {
-      commits.length.should.equal(20)
+      commits.length.should.equal(22)
       done()
     })
   })
 
-  it('returns 21 commits from repository with all=true', function(done) {
+  it('returns 23 commits from repository with all=true', function(done) {
     gitlog({ repo: testRepoLocation, all: true, number: 100 }, function(err, commits) {
-      commits.length.should.equal(21)
+      commits.length.should.equal(23)
       done()
     })
   })
@@ -205,49 +205,41 @@ describe('gitlog', function() {
 
   it('returns A status for files that are added', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[0].status[0].should.equal('A')
+      commits[1].status[0].should.equal('A')
       done()
     })
   })
 
   it('returns C100 status for files that are copied', function(done) {
     gitlog({ repo: testRepoLocation, findCopiesHarder: true }, function(err, commits) {
-      commits[0].status[0].should.equal('C100')
+      commits[1].status[0].should.equal('C100')
       done()
     })
   })
 
   it('returns M status for files that are modified', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[1].status[0].should.equal('M')
+      commits[3].status[0].should.equal('M')
       done()
     })
   })
 
   it('returns D status for files that are deleted', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[3].status[0].should.equal('D')
+      commits[5].status[0].should.equal('D')
       done()
     })
   })
 
   it('returns author name correctly', function(done) {
-    var command = 'cd ' + testRepoLocation + ' ' +
-                  '&& git checkout -b new-merge-branch ' +
-                  '&& git commit -m "Commit to be merged" --allow-empty ' +
-                  '&& git checkout master ' +
-                  '&& git merge new-merge-branch ';
+    // check the author name of all commits
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
 
-    // check status of merge commit
-    exec(command, function() {
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
-
-        commits.forEach(function(commit) {
-            commit.authorName.should.equal('Your Name');
-        })
-
-        done()
+      commits.forEach(function(commit) {
+          commit.authorName.should.equal('Your Name');
       })
+
+      done()
     })
   })
 

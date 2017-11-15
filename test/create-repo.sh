@@ -49,6 +49,13 @@ git add new-file
 git commit -m "Added new file on new branch"
 git checkout master
 
+# Merge commit
+git checkout -b new-merge-branch
+git commit -m "Commit to be merged" --allow-empty
+git checkout master
+git merge --no-edit --no-ff new-merge-branch
+git branch -d new-merge-branch
+
 # git symbolic-ref HEAD refs/heads/test-branch
 # rm .git/index
 # git clen -fdx
