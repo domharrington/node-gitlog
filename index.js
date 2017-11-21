@@ -1,6 +1,7 @@
 module.exports = gitlog
 var exec = require('child_process').exec
   , execSync = require('child_process').execSync
+  , existsSync = require('fs').existsSync
   , debug = require('debug')('gitlog')
   , extend = require('lodash.assign')
   , delimiter = '\t'
@@ -40,6 +41,7 @@ function addOptional(command, options) {
 
 function gitlog(options, cb) {
   if (!options.repo) throw new Error('Repo required!')
+  if (!existsSync(options.repo)) throw new Error('Repo location does not exist');
 
   var defaultOptions =
     { number: 10
@@ -47,18 +49,11 @@ function gitlog(options, cb) {
     , nameStatus:true
     , findCopiesHarder:false
     , all:false
-    , execOptions: {}
+    , execOptions: { cwd: options.repo }
     }
 
   // Set defaults
   options = extend(defaultOptions, options)
-
-  var prevWorkingDir =  process.cwd()
-  try {
-    process.chdir(options.repo)
-  } catch (e) {
-    throw new Error('Repo location does not exist')
-  }
 
   // Start constructing command
   var command = 'git log '
@@ -105,9 +100,9 @@ function gitlog(options, cb) {
     // run Sync
 
     var stdout = execSync(command, options.execOptions).toString()
-      , commits = stdout.split('\n@begin@')
+      , commits = stdout.split('@begin@')
 
-    if (commits.length === 1 && commits[0] === '' ){
+    if (commits[0] === '' ){
       commits.shift()
     }
 
@@ -115,15 +110,13 @@ function gitlog(options, cb) {
 
     commits = parseCommits(commits, options.fields,options.nameStatus)
 
-    process.chdir(prevWorkingDir)
-
     return commits
   }
 
   exec(command, options.execOptions, function(err, stdout, stderr) {
     debug('stdout',stdout)
-    var commits = stdout.split('\n@begin@')
-    if (commits.length === 1 && commits[0] === '' ){
+    var commits = stdout.split('@begin@')
+    if (commits[0] === '' ){
       commits.shift()
     }
     debug('commits',commits)
@@ -132,8 +125,6 @@ function gitlog(options, cb) {
 
     cb(stderr || err, commits)
   })
-
-  process.chdir(prevWorkingDir);
 }
 
 function fileNameAndStatus(options) {
@@ -142,12 +133,12 @@ function fileNameAndStatus(options) {
 
 function parseCommits(commits, fields, nameStatus) {
   return commits.map(function(commit) {
-    var parts = commit.split('@end@\n\n')
+    var parts = commit.split('@end@')
 
     commit = parts[0].split(delimiter)
 
     if (parts[1]) {
-      var parseNameStatus = parts[1].split('\n');
+      var parseNameStatus = parts[1].trimLeft().split('\n');
 
       // Removes last empty char if exists
       if (parseNameStatus[parseNameStatus.length - 1] === ''){

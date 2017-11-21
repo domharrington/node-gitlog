@@ -19,7 +19,7 @@ exec('git --version', function(stderr, stdout) {
 
 describe('gitlog', function() {
 
-  before(function(done) {
+  beforeEach(function(done) {
     execInTestDir(__dirname + '/delete-repo.sh', function(error) {
       if (error) {
         return done(error)
@@ -62,16 +62,16 @@ describe('gitlog', function() {
     })
   })
 
-  it('returns 20 commits from repository with all=false', function(done) {
+  it('returns 22 commits from repository with all=false', function(done) {
     gitlog({ repo: testRepoLocation, all: false, number: 100 }, function(err, commits) {
-      commits.length.should.equal(20)
+      commits.length.should.equal(22)
       done()
     })
   })
 
-  it('returns 21 commits from repository with all=true', function(done) {
+  it('returns 23 commits from repository with all=true', function(done) {
     gitlog({ repo: testRepoLocation, all: true, number: 100 }, function(err, commits) {
-      commits.length.should.equal(21)
+      commits.length.should.equal(23)
       done()
     })
   })
@@ -205,7 +205,7 @@ describe('gitlog', function() {
 
   it('returns A status for files that are added', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[0].status[0].should.equal('A')
+      commits[1].status[0].should.equal('A')
       done()
     })
   })
@@ -219,14 +219,26 @@ describe('gitlog', function() {
 
   it('returns M status for files that are modified', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[2].status[0].should.equal('M')
+      commits[3].status[0].should.equal('M')
       done()
     })
   })
 
   it('returns D status for files that are deleted', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
-      commits[3].status[0].should.equal('D')
+      commits[4].status[0].should.equal('D')
+      done()
+    })
+  })
+
+  it('returns author name correctly', function(done) {
+    // check the author name of all commits
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+
+      commits.forEach(function(commit) {
+          commit.authorName.should.equal('Your Name');
+      })
+
       done()
     })
   })
@@ -237,10 +249,10 @@ describe('gitlog', function() {
   // it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function(done) {
   //   gitlog({ repo: testRepoLocation, number: 100 }, function(err, commits) {
   //     if (semver.gte(gitVer, '2.0.0')){
-  //       commits[4].status[0].should.equal('R100')
-  //       commits[4].status[1].should.equal('D')
+  //       commits[5].status[0].should.equal('R100')
+  //       commits[5].status[1].should.equal('D')
   //     } else {
-  //       commits[4].status[0].should.equal('A')
+  //       commits[5].status[0].should.equal('A')
   //     }
   //     done()
   //   })
