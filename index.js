@@ -53,7 +53,8 @@ function gitlog(options, cb) {
     }
 
   // Set defaults
-  options = extend(defaultOptions, options)
+  options = extend({}, defaultOptions, options)
+  extend(options.execOptions, defaultOptions.execOptions )
 
   // Start constructing command
   var command = 'git log '

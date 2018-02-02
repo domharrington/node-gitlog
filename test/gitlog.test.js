@@ -84,6 +84,26 @@ describe('gitlog', function() {
     })
   })
 
+  it('returns 10 commits from other dir, execOptions specified', function(done) {
+    var cwd = process.cwd()
+    process.chdir('/tmp')
+    gitlog({ repo: testRepoLocation, execOptions: { encoding: 'utf8' } }, function(err, commits) {
+      commits.length.should.equal(10)
+      done()
+    })
+    process.chdir(cwd)
+  })
+
+  it('returns 10 commits from other dir', function(done) {
+    var cwd = process.cwd()
+    process.chdir('/tmp')
+    gitlog({ repo: testRepoLocation }, function(err, commits) {
+      commits.length.should.equal(10)
+      done()
+    })
+    process.chdir(cwd)
+  })
+
   it('returns the fields requested', function(done) {
     var fields =
       [ 'hash'
