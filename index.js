@@ -23,6 +23,7 @@ var exec = require('child_process').exec
     , subject: '%s'
     , body: '%b'
     , rawBody: '%B'
+    , tags: '%D'
     }
   , notOptFields = [ 'status', 'files' ]
 
@@ -187,7 +188,21 @@ function parseCommits(commits, fields, nameStatus) {
 
     commit.forEach(function(commitField, index) {
       if (fields[index]) {
-        parsed[fields[index]] = commitField
+        if(fields[index]==='tags') {
+          var tags = [];
+          var start = commitField.indexOf('tag: ');
+          if(start >= 0) {
+            commitField.substr(start+5).trim().split(',').forEach(function(tag){
+              tag=tag.trim();
+              if(tag.length > 0) {
+                tags.push(tag);
+              }
+            });
+          }
+          parsed[fields[index]] = tags;
+        } else {
+          parsed[fields[index]] = commitField
+        }
       } else {
         if (nameStatus){
           var pos = (index - fields.length) % notOptFields.length

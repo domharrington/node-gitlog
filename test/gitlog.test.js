@@ -111,6 +111,7 @@ describe('gitlog', function() {
       , 'treeHash'
       , 'authorName'
       , 'authorEmail'
+      , 'tags'
       ]
 
     gitlog({ repo: testRepoLocation, fields: fields, nameStatus: false }, function(err, commits) {

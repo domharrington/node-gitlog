@@ -79,7 +79,7 @@ Find commits on all branches instead of just on the current one.
 This option is disabled by default.
 
 ### branch ([revision range](https://git-scm.com/docs/git-log#git-log-ltrevisionrangegt))
-Show only commits in the specified branch or revision range. 
+Show only commits in the specified branch or revision range.
 
 By default uses the current branch and defaults to `HEAD` (i.e. the whole history leading to the current commit).
 
@@ -117,6 +117,7 @@ An array of fields to return from the log, here are the possible options:
 - subject - commit message (first line)
 - body - commit body
 - rawBody - raw body (subject + body)
+- tags - array of tags
 
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
 
