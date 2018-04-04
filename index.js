@@ -193,10 +193,7 @@ function parseCommits(commits, fields, nameStatus) {
           var start = commitField.indexOf('tag: ');
           if(start >= 0) {
             commitField.substr(start+5).trim().split(',').forEach(function(tag){
-              tag=tag.trim();
-              if(tag.length > 0) {
-                tags.push(tag);
-              }
+              tags.push(tag.trim());
             });
           }
           parsed[fields[index]] = tags;

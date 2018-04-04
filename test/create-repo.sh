@@ -49,6 +49,9 @@ git add new-file
 git commit -m "Added new file on new branch"
 git checkout master
 
+# Add at least one tag
+git tag -a 'v1.2.3' -m'a tag'
+
 # Merge commit
 git checkout -b new-merge-branch
 git commit -m "Commit to be merged" --allow-empty
