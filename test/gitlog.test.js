@@ -123,7 +123,16 @@ describe('gitlog', function() {
   })
 
   it('returns tags correctly', function(done) {
-    gitlog({ repo: testRepoLocation, fields: [ 'tags' ] , nameStatus: false }, function(err, commits) {
+    var fields =
+      [ 'hash'
+      , 'abbrevHash'
+      , 'treeHash'
+      , 'authorName'
+      , 'authorEmail'
+      , 'tags'
+      ]
+
+    gitlog({ repo: testRepoLocation, fields: fields, nameStatus: false }, function(err, commits) {
       commits[0].tags.length.should.equal(0)
       commits[1].tags.length.should.equal(1)
       commits[1].tags[0].should.equal('v1.2.3')
