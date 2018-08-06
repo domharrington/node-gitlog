@@ -26,7 +26,7 @@ const options =
       , 'authorDateRel'
       ]
     , execOptions:
-      { maxBuffer: 1000 x 1024
+      { maxBuffer: 1000 * 1024
       }
     };
 
