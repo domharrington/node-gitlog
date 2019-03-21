@@ -67,7 +67,9 @@ function gitlog(options, cb) {
     command += '--all '
   }
 
-  command += '-n ' + options.number
+  if (options.number > 0) {
+    command += '-n ' + options.number
+  }
 
   command = addOptional(command, options)
 
