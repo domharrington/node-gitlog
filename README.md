@@ -83,6 +83,9 @@ Show only commits in the specified branch or revision range.
 
 By default uses the current branch and defaults to `HEAD` (i.e. the whole history leading to the current commit).
 
+### file
+Optional file filter for the `git log` command
+
 ### execOptions
 
 Type: `Object`
