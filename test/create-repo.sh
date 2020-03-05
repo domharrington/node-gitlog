@@ -51,7 +51,9 @@ git checkout master
 
 # Merge commit
 git checkout -b new-merge-branch
-git commit -m "Commit to be merged" --allow-empty
+touch foo
+git add foo
+git commit -m "Commit to be merged"
 git checkout master
 git merge --no-edit --no-ff new-merge-branch
 git branch -d new-merge-branch
