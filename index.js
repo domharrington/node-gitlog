@@ -47,6 +47,7 @@ function gitlog(options, cb) {
     { number: 10
     , fields: [ 'abbrevHash', 'hash', 'subject', 'authorName' ]
     , nameStatus:true
+    , includeMergeCommitFiles:false
     , findCopiesHarder:false
     , all:false
     , execOptions: { cwd: options.repo }
@@ -65,6 +66,10 @@ function gitlog(options, cb) {
 
   if (options.all){
     command += '--all '
+  }
+
+  if (options.includeMergeCommitFiles){
+    command += '-m '
   }
 
   command += '-n ' + options.number

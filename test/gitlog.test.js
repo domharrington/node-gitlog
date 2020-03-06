@@ -237,6 +237,13 @@ describe('gitlog', function() {
     })
   })
 
+  it('returns merge commits files when includeMergeCommitFiles is true', function(done) {
+    gitlog({ repo: testRepoLocation, includeMergeCommitFiles: true }, function(err, commits) {
+      commits[0].files[0].should.equal('foo')
+      done()
+    })
+  })
+
   it('returns M status for files that are modified', function(done) {
     gitlog({ repo: testRepoLocation }, function(err, commits) {
       commits[3].status[0].should.equal('M')
