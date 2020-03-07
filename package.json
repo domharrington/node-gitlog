@@ -4,8 +4,7 @@
   "description": "Git log parser for Node.JS",
   "main": "index.js",
   "scripts": {
-    "lint": "jshint .",
-    "checkStyle": "jscs .",
+    "lint": "eslint src/**/*.js test/**/*.js",
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -r should",
     "posttest": "istanbul check-coverage --statements 95 --branches 85 --functions 100 --lines 95 && rm -rf coverage"
   },
@@ -24,17 +23,31 @@
   "author": "Dom Harrington",
   "license": "BSD",
   "engines": {
-    "node": ">=0.11.12"
+    "node": ">= 10.x"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-xo": "^0.29.1",
+    "eslint-plugin-jsdoc": "^22.1.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
     "istanbul": "^0.4.5",
-    "jscs": "^3.0.7",
-    "jshint": "^2.5.6",
+    "lint-staged": "^10.0.8",
     "mocha": "^3.0.2",
+    "prettier": "^1.19.1",
     "should": "~11.1.0"
   },
   "dependencies": {
     "debug": "^3.1.0",
     "lodash.assign": "^4.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }

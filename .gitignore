@@ -3,6 +3,8 @@ public/css/*.css
 public/css/main/*.css
 public/css/admin/*.css
 /.monitor
+test-repo.git
+test-repo-clone
 
 # Eclipse
 /.project
