@@ -93,12 +93,12 @@ function gitlog(options, cb) {
     command += ' ' + options.branch
   }
 
+  //File and file status
+  command += fileNameAndStatus(options)
+
   if (options.file) {
     command += ' -- ' + options.file
   }
-
-  //File and file status
-  command += fileNameAndStatus(options)
 
   debug('command', options.execOptions, command)
 
