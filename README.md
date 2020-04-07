@@ -22,15 +22,20 @@ const options = {
   execOptions: { maxBuffer: 1000 * 1024 },
 };
 
+// Synchronous
+const commits = gitlog(options);
+console.log(commits);
+
 // Asynchronous (with Callback)
 gitlog(options, function (error, commits) {
   // Commits is an array of commits in the repo
   console.log(commits);
 });
 
-// Synchronous
-let commits = gitlog(options);
-console.log(commits);
+// Asynchronous (with Promise)
+gitlog(options)
+  .then((commits) => console.log(commits))
+  .catch((err) => console.log(err));
 ```
 
 ## Options
