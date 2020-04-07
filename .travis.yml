@@ -9,6 +9,9 @@ branches:
   only:
     - master
 
+git:
+  depth: false
+
 jobs:
   include:
     - stage: deploy
