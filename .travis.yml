@@ -9,6 +9,11 @@ branches:
   only:
     - master
 
+script:
+  - yarn lint
+  - yarn test
+  - yarn build
+
 jobs:
   include:
     - stage: deploy
