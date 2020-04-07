@@ -1,7 +1,7 @@
 /* eslint-disable handle-callback-err, no-unused-expressions */
 
 import { exec, execSync } from "child_process";
-import gitlog from "../src";
+import gitlog, { gitlogPromise } from "../src";
 
 const testRepoLocation = `${__dirname}/test-repo-clone`;
 
@@ -86,6 +86,11 @@ describe("gitlog", () => {
       expect(commits.length).toBe(10);
       done();
     });
+  });
+
+  it("defaults to 10 commits - promise", async () => {
+    const commits = await gitlogPromise({ repo: testRepoLocation });
+    expect(commits.length).toBe(10);
   });
 
   it("returns 10 commits from other dir, execOptions specified", (done) => {
