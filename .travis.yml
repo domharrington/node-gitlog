@@ -13,6 +13,6 @@ jobs:
   include:
     - stage: deploy
       if: branch = master AND type = push AND fork = false
-      script: yarn auto shipit
+      script: git checkout master && yarn auto shipit
       node_js: "10"
       skip-cleanup: true
