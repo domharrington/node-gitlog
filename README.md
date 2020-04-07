@@ -19,11 +19,11 @@ const options = {
   number: 20,
   author: "Dom Harrington",
   fields: ["hash", "abbrevHash", "subject", "authorName", "authorDateRel"],
-  execOptions: { maxBuffer: 1000 * 1024 }
+  execOptions: { maxBuffer: 1000 * 1024 },
 };
 
 // Asynchronous (with Callback)
-gitlog(options, function(error, commits) {
+gitlog(options, function (error, commits) {
   // Commits is an array of commits in the repo
   console.log(commits);
 });

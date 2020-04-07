@@ -22,7 +22,7 @@ const fieldMap = {
   committerDateRel: "%cr",
   subject: "%s",
   body: "%b",
-  rawBody: "%B"
+  rawBody: "%B",
 };
 const notOptFields = ["status", "files"];
 
@@ -35,7 +35,7 @@ function addOptional(command, options) {
     "after",
     "until",
     "before",
-    "committer"
+    "committer",
   ];
 
   for (let i = cmdOptional.length; i--; ) {
@@ -49,7 +49,7 @@ function addOptional(command, options) {
 
 /** Parse the output of "git log" for commit information */
 const parseCommits = (commits, fields, nameStatus) => {
-  return commits.map(rawCommit => {
+  return commits.map((rawCommit) => {
     const parts = rawCommit.split("@end@");
     let commit = parts[0].split(delimiter);
 
@@ -95,7 +95,7 @@ const parseCommits = (commits, fields, nameStatus) => {
 
     if (nameStatus) {
       // Create arrays for non optional fields if turned on
-      notOptFields.forEach(d => {
+      notOptFields.forEach((d) => {
         parsed[d] = [];
       });
     }
@@ -138,7 +138,7 @@ function gitlog(userOptions, cb) {
     includeMergeCommitFiles: false,
     findCopiesHarder: false,
     all: false,
-    execOptions: { cwd: userOptions.repo }
+    execOptions: { cwd: userOptions.repo },
   };
 
   // Set defaults
@@ -168,7 +168,7 @@ function gitlog(userOptions, cb) {
   command += ' --pretty="@begin@';
 
   // Iterating through the fields and adding them to the custom format
-  options.fields.forEach(field => {
+  options.fields.forEach((field) => {
     if (!fieldMap[field] && notOptFields.indexOf(field) === -1) {
       throw new Error(`Unknown field: ${field}`);
     }
@@ -211,7 +211,7 @@ function gitlog(userOptions, cb) {
     return commits;
   }
 
-  exec(command, options.execOptions, function(err, stdout, stderr) {
+  exec(command, options.execOptions, function (err, stdout, stderr) {
     debug("stdout", stdout);
     let commits = stdout.split("@begin@");
 

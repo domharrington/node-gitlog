@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "xo",
-    "plugin:jsdoc/recommended",
-    "prettier"
-  ],
+  "extends": ["xo", "plugin:jsdoc/recommended", "prettier"],
 
   "plugins": ["prettier", "jsdoc"],
 
@@ -16,12 +12,10 @@
   "env": {
     "mocha": true
   },
-   
+
   "overrides": [
     {
-      "files": [
-        "*.test.*"
-      ],
+      "files": ["*.test.*"],
       "rules": {
         "jsdoc/require-jsdoc": 0
       }

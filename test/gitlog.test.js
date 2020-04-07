@@ -1,7 +1,7 @@
 /* eslint-disable handle-callback-err, no-unused-expressions */
 
 const { exec } = require("child_process");
-const gitlog = require("../");
+const gitlog = require("../src");
 
 const testRepoLocation = `${__dirname}/test-repo-clone`;
 let gitVer = "1.0.0";
@@ -10,25 +10,19 @@ function execInTestDir(command, cb) {
   exec(command, { cwd: __dirname }, cb);
 }
 
-exec("git --version", function(stderr, stdout) {
+exec("git --version", function (stderr, stdout) {
   if (!stderr) {
     // Slice version number from returned string
-    gitVer = stdout
-      .split("git version")[1]
-      .trim()
-      .slice(0, 5);
+    gitVer = stdout.split("git version")[1].trim().slice(0, 5);
 
     // Only care about major/minor/build, any more and semver will error
-    gitVer = gitVer
-      .split(".")
-      .slice(0, 3)
-      .join(".");
+    gitVer = gitVer.split(".").slice(0, 3).join(".");
   }
 });
 
-describe("gitlog", function() {
-  beforeEach(function(done) {
-    execInTestDir(`${__dirname}/delete-repo.sh`, function(error) {
+describe("gitlog", function () {
+  beforeEach(function (done) {
+    execInTestDir(`${__dirname}/delete-repo.sh`, function (error) {
       if (error) {
         return done(error);
       }
@@ -37,30 +31,30 @@ describe("gitlog", function() {
     });
   });
 
-  it("throws an error when repo is not provided", function() {
-    (function() {
-      gitlog({}, function() {});
+  it("throws an error when repo is not provided", function () {
+    (function () {
+      gitlog({}, function () {});
     }.should.throw("Repo required!"));
   });
 
-  it("throws an error when repo location does not exist", function() {
-    (function() {
-      gitlog({ repo: "wrong directory" }, function() {});
+  it("throws an error when repo location does not exist", function () {
+    (function () {
+      gitlog({ repo: "wrong directory" }, function () {});
     }.should.throw("Repo location does not exist"));
   });
 
-  it("throws an error when an unknown field is used", function() {
+  it("throws an error when an unknown field is used", function () {
     const field = "fake-field";
-    (function() {
-      gitlog({ repo: testRepoLocation, fields: [field] }, function() {});
+    (function () {
+      gitlog({ repo: testRepoLocation, fields: [field] }, function () {});
     }.should.throw(`Unknown field: ${field}`));
   });
 
-  it("returns 21 commits from specified branch", function() {
-    return new Promise(done => {
+  it("returns 21 commits from specified branch", function () {
+    return new Promise((done) => {
       gitlog(
         { repo: testRepoLocation, branch: "new-branch", number: 100 },
-        function(err, commits) {
+        function (err, commits) {
           commits.length.should.equal(21);
           done();
         }
@@ -68,11 +62,11 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns 1 commit from specified revision range", function() {
-    return new Promise(done => {
+  it("returns 1 commit from specified revision range", function () {
+    return new Promise((done) => {
       gitlog(
         { repo: testRepoLocation, branch: "master..new-branch", number: 100 },
-        function(err, commits) {
+        function (err, commits) {
           commits.length.should.equal(1);
           commits[0].subject.should.equal("Added new file on new branch");
           done();
@@ -81,9 +75,9 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns 22 commits from repository with all=false", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, all: false, number: 100 }, function(
+  it("returns 22 commits from repository with all=false", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, all: false, number: 100 }, function (
         err,
         commits
       ) {
@@ -93,9 +87,9 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns 23 commits from repository with all=true", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, all: true, number: 100 }, function(
+  it("returns 23 commits from repository with all=true", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, all: true, number: 100 }, function (
         err,
         commits
       ) {
@@ -105,9 +99,9 @@ describe("gitlog", function() {
     });
   });
 
-  it("defaults to 10 commits", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
+  it("defaults to 10 commits", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
         commits.length.should.equal(10);
 
         done();
@@ -115,13 +109,13 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns 10 commits from other dir, execOptions specified", function() {
-    return new Promise(done => {
+  it("returns 10 commits from other dir, execOptions specified", function () {
+    return new Promise((done) => {
       const cwd = process.cwd();
       process.chdir("/tmp");
       gitlog(
         { repo: testRepoLocation, execOptions: { encoding: "utf8" } },
-        function(err, commits) {
+        function (err, commits) {
           commits.length.should.equal(10);
           done();
         }
@@ -130,11 +124,11 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns 10 commits from other dir", function() {
-    return new Promise(done => {
+  it("returns 10 commits from other dir", function () {
+    return new Promise((done) => {
       const cwd = process.cwd();
       process.chdir("/tmp");
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
         commits.length.should.equal(10);
         done();
       });
@@ -142,17 +136,17 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns the fields requested", function() {
-    return new Promise(done => {
+  it("returns the fields requested", function () {
+    return new Promise((done) => {
       const fields = [
         "hash",
         "abbrevHash",
         "treeHash",
         "authorName",
-        "authorEmail"
+        "authorEmail",
       ];
 
-      gitlog({ repo: testRepoLocation, fields, nameStatus: false }, function(
+      gitlog({ repo: testRepoLocation, fields, nameStatus: false }, function (
         err,
         commits
       ) {
@@ -164,11 +158,11 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns a default set of fields", function() {
-    return new Promise(done => {
+  it("returns a default set of fields", function () {
+    return new Promise((done) => {
       const defaults = ["abbrevHash", "hash", "subject", "authorName"];
 
-      gitlog({ repo: testRepoLocation, nameStatus: false }, function(
+      gitlog({ repo: testRepoLocation, nameStatus: false }, function (
         err,
         commits
       ) {
@@ -179,18 +173,18 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns nameStatus fields", function() {
-    return new Promise(done => {
+  it("returns nameStatus fields", function () {
+    return new Promise((done) => {
       const defaults = [
         "abbrevHash",
         "hash",
         "subject",
         "authorName",
         "status",
-        "files"
+        "files",
       ];
 
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
         commits[0].should.have.properties(defaults);
 
         done();
@@ -198,9 +192,9 @@ describe("gitlog", function() {
     });
   });
 
-  it('returns fields with "since" limit', function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, since: "1 minutes ago" }, function(
+  it('returns fields with "since" limit', function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, since: "1 minutes ago" }, function (
         err,
         commits
       ) {
@@ -211,9 +205,9 @@ describe("gitlog", function() {
     });
   });
 
-  it('returns fields with "after" limit', function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, after: "1 minutes ago" }, function(
+  it('returns fields with "after" limit', function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, after: "1 minutes ago" }, function (
         err,
         commits
       ) {
@@ -224,9 +218,9 @@ describe("gitlog", function() {
     });
   });
 
-  it('returns fields with "before" limit', function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, before: "2001-12-01" }, function(
+  it('returns fields with "before" limit', function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, before: "2001-12-01" }, function (
         err,
         commits
       ) {
@@ -237,9 +231,9 @@ describe("gitlog", function() {
     });
   });
 
-  it('returns fields with "until" limit', function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, until: "2001-12-01" }, function(
+  it('returns fields with "until" limit', function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, until: "2001-12-01" }, function (
         err,
         commits
       ) {
@@ -250,8 +244,8 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns commits only by author", function() {
-    return new Promise(done => {
+  it("returns commits only by author", function () {
+    return new Promise((done) => {
       const defaults = ["authorName"];
       const command =
         `cd ${testRepoLocation} ` +
@@ -262,12 +256,12 @@ describe("gitlog", function() {
       const author = "Dom Harrington";
 
       // Adding a new commit by different author
-      exec(command, function() {
-        gitlog({ repo: testRepoLocation, author, fields: defaults }, function(
+      exec(command, function () {
+        gitlog({ repo: testRepoLocation, author, fields: defaults }, function (
           err,
           commits
         ) {
-          commits.forEach(function(commit) {
+          commits.forEach(function (commit) {
             commit.authorName.should.equal(author);
           });
 
@@ -277,8 +271,8 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns commits only by committer", function() {
-    return new Promise(done => {
+  it("returns commits only by committer", function () {
+    return new Promise((done) => {
       const defaults = ["committerName"];
       const command =
         `cd ${testRepoLocation} ` +
@@ -289,11 +283,11 @@ describe("gitlog", function() {
       const committer = "Dom Harrington";
 
       // Adding a new commit by different author
-      exec(command, function() {
+      exec(command, function () {
         gitlog(
           { repo: testRepoLocation, committer, fields: defaults },
-          function(err, commits) {
-            commits.forEach(function(commit) {
+          function (err, commits) {
+            commits.forEach(function (commit) {
               commit.committerName.should.equal(committer);
             });
 
@@ -304,18 +298,18 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns A status for files that are added", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
+  it("returns A status for files that are added", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
         commits[1].status[0].should.equal("A");
         done();
       });
     });
   });
 
-  it("returns C100 status for files that are copied", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation, findCopiesHarder: true }, function(
+  it("returns C100 status for files that are copied", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation, findCopiesHarder: true }, function (
         err,
         commits
       ) {
@@ -325,11 +319,11 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns merge commits files when includeMergeCommitFiles is true", function() {
-    return new Promise(done => {
+  it("returns merge commits files when includeMergeCommitFiles is true", function () {
+    return new Promise((done) => {
       gitlog(
         { repo: testRepoLocation, includeMergeCommitFiles: true },
-        function(err, commits) {
+        function (err, commits) {
           commits[0].files[0].should.equal("foo");
           done();
         }
@@ -337,29 +331,29 @@ describe("gitlog", function() {
     });
   });
 
-  it("returns M status for files that are modified", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
+  it("returns M status for files that are modified", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
         commits[3].status[0].should.equal("M");
         done();
       });
     });
   });
 
-  it("returns D status for files that are deleted", function() {
-    return new Promise(done => {
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
+  it("returns D status for files that are deleted", function () {
+    return new Promise((done) => {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
         commits[4].status[0].should.equal("D");
         done();
       });
     });
   });
 
-  it("returns author name correctly", function() {
-    return new Promise(done => {
+  it("returns author name correctly", function () {
+    return new Promise((done) => {
       // check the author name of all commits
-      gitlog({ repo: testRepoLocation }, function(err, commits) {
-        commits.forEach(function(commit) {
+      gitlog({ repo: testRepoLocation }, function (err, commits) {
+        commits.forEach(function (commit) {
           commit.authorName.should.equal("Your Name");
         });
 
@@ -383,15 +377,15 @@ describe("gitlog", function() {
   //   })
   // })
 
-  it("returns synchronously if no callback is provided", function() {
+  it("returns synchronously if no callback is provided", function () {
     const commits = gitlog({ repo: testRepoLocation });
     commits.length.should.equal(10);
   });
 
-  it("should allow both body and rawBody", function() {
-    return new Promise(done => {
+  it("should allow both body and rawBody", function () {
+    return new Promise((done) => {
       const fields = ["body", "rawBody"];
-      gitlog({ repo: testRepoLocation, number: 1, fields }, function(
+      gitlog({ repo: testRepoLocation, number: 1, fields }, function (
         err,
         commits
       ) {
@@ -401,8 +395,8 @@ describe("gitlog", function() {
     });
   });
 
-  after(function(done) {
-    execInTestDir(`${__dirname}/delete-repo.sh`, function() {
+  after(function (done) {
+    execInTestDir(`${__dirname}/delete-repo.sh`, function () {
       done();
     });
   });
