@@ -1,3 +1,15 @@
+# v3.3.3 (Tue Apr 07 2020)
+
+#### ⚠️  Pushed to `master`
+
+- run build during deploy ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v3.3.2 (Tue Apr 07 2020)
 
 #### ⚠️  Pushed to `master`
