@@ -2,10 +2,14 @@
   "name": "gitlog",
   "version": "3.2.0",
   "description": "Git log parser for Node.JS",
-  "main": "index.js",
+  "module": "dist/tsdx-template.esm.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint src/**/*.js test/**/*.js",
-    "test": "nyc --reporter=text mocha -- -r should"
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint src test"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
@@ -25,21 +29,17 @@
     "node": ">= 10.x"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-config-xo": "^0.29.1",
-    "eslint-plugin-jsdoc": "^22.1.0",
-    "eslint-plugin-prettier": "^3.1.2",
+    "@types/debug": "^4.1.5",
+    "@types/jest": "^25.2.1",
     "husky": "^4.2.3",
     "lint-staged": "^10.1.2",
-    "mocha": "^7.1.1",
-    "nyc": "^15.0.1",
     "prettier": "^2.0.4",
-    "should": "~13.2.3"
+    "tsdx": "^0.13.1",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "lodash.assign": "^4.2.0"
+    "tslib": "^1.11.1"
   },
   "husky": {
     "hooks": {
@@ -48,11 +48,5 @@
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
-  },
-  "nyc": {
-    "branches": 85,
-    "lines": 95,
-    "functions": 100,
-    "statements": 95
   }
 }
