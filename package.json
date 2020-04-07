@@ -20,7 +20,7 @@
     "log",
     "parser"
   ],
-  "author": "Dom Harrington",
+  "author": "Dom Harrington <domharrington@protonmail.com>",
   "license": "BSD",
   "engines": {
     "node": ">= 10.x"
