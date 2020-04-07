@@ -41,3 +41,4 @@ Icon?
 /.cake_task_cache
 
 coverage
+.nyc_output
