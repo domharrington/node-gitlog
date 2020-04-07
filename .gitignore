@@ -10,6 +10,7 @@ test-repo-clone
 /.project
 /.settings
 /.buildpath
+.env
 
 # Windows
 Thumbs.db
