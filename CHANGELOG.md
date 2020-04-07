@@ -1,3 +1,15 @@
+# v3.3.4 (Tue Apr 07 2020)
+
+#### 🐛 Bug Fix
+
+- fix files type [#48](https://github.com/domharrington/node-gitlog/pull/48) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v3.3.3 (Tue Apr 07 2020)
 
 #### ⚠️  Pushed to `master`
