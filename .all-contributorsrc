@@ -1,0 +1,162 @@
+{
+  "projectName": "node-gitlog",
+  "projectOwner": "domharrington",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "domharrington",
+      "name": "domharrington",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/848223?v=4",
+      "profile": "https://github.com/domharrington",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "ideas"
+      ]
+    },
+    {
+      "login": "hipstersmoothie",
+      "name": "Andrew Lisowski",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1192452?v=4",
+      "profile": "http://hipstersmoothie.com",
+      "contributions": [
+        "code",
+        "doc",
+        "infra",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "metaodi",
+      "name": "Stefan Oderbolz",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/538415?v=4",
+      "profile": "http://metaodi.ch",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "palortoff",
+      "name": "palortoff",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10258543?v=4",
+      "profile": "https://github.com/palortoff",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "malys",
+      "name": "Malys",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/463016?v=4",
+      "profile": "https://malys.github.io/",
+      "contributions": [
+        "bug",
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "mikemellor11",
+      "name": "Mike Mellor",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6986032?v=4",
+      "profile": "http://CodeGymSleep.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "hmedney",
+      "name": "Hunter Medney",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1221751?v=4",
+      "profile": "https://github.com/hmedney",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Gilwyad",
+      "name": "Peter Baranyi",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1919041?v=4",
+      "profile": "https://github.com/Gilwyad",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "BBlackwo",
+      "name": "Benjamin Blackwood",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/7598058?v=4",
+      "profile": "https://twitter.com/B_Blackwo",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Asheboy",
+      "name": "Ash Summers",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1822529?v=4",
+      "profile": "https://github.com/Asheboy",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "007design",
+      "name": "007design",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1998403?v=4",
+      "profile": "https://github.com/007design",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "tobaccoplaybook",
+      "name": "tobaccoplaybook",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/21124900?v=4",
+      "profile": "https://github.com/tobaccoplaybook",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "nicola",
+      "name": "Nicola",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1424850?v=4",
+      "profile": "http://nicola.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bluelovers",
+      "name": "bluelovers",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/167966?v=4",
+      "profile": "http://bluelovers.net",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "afram",
+      "name": "Marwan Butrous",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2238230?v=4",
+      "profile": "https://github.com/afram",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

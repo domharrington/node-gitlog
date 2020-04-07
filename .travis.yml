@@ -1,5 +1,18 @@
 language: node_js
+
 node_js:
   - "10"
   - "12"
   - "13"
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+    - stage: deploy
+      if: branch = master AND type = push AND fork = false
+      script: yarn auto shipit
+      node_js: "10"
+      skip-cleanup: true
