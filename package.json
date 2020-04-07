@@ -24,7 +24,7 @@
     "parser"
   ],
   "author": "Dom Harrington <domharrington@protonmail.com>",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "engines": {
     "node": ">= 10.x"
   },
@@ -47,6 +47,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,css,md,ts,json}": "prettier --write"
   }
 }
