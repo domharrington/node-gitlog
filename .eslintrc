@@ -1,0 +1,24 @@
+{
+  "extends": ["xo", "plugin:jsdoc/recommended", "prettier"],
+
+  "plugins": ["prettier", "jsdoc"],
+
+  "rules": {
+    "jsdoc/require-param": 0,
+    "jsdoc/require-returns": 0,
+    "capitalized-comments": 0
+  },
+
+  "env": {
+    "mocha": true
+  },
+
+  "overrides": [
+    {
+      "files": ["*.test.*"],
+      "rules": {
+        "jsdoc/require-jsdoc": 0
+      }
+    }
+  ]
+}

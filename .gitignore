@@ -3,11 +3,14 @@ public/css/*.css
 public/css/main/*.css
 public/css/admin/*.css
 /.monitor
+test-repo.git
+test-repo-clone
 
 # Eclipse
 /.project
 /.settings
 /.buildpath
+.env
 
 # Windows
 Thumbs.db
@@ -38,3 +41,4 @@ Icon?
 /.cake_task_cache
 
 coverage
+.nyc_output
