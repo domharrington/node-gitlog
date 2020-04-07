@@ -135,7 +135,7 @@ const parseCommits = <T extends string>(
   fields: readonly T[],
   nameStatus: boolean
 ) => {
-  type Commit = Partial<Record<T | NotOptField, any>>;
+  type Commit = Record<T | NotOptField, any>;
 
   return commits.map((rawCommit) => {
     const parts = rawCommit.split("@end@");
@@ -178,7 +178,7 @@ const parseCommits = <T extends string>(
     // Remove the first empty char from the array
     commit.shift();
 
-    const parsed: Commit = {};
+    const parsed: Partial<Commit> = {};
 
     if (nameStatus) {
       // Create arrays for non optional fields if turned on
@@ -209,7 +209,7 @@ const parseCommits = <T extends string>(
       }
     });
 
-    return parsed;
+    return parsed as Commit;
   });
 };
 
@@ -272,31 +272,39 @@ function createCommand<T extends readonly CommitField[] = DefaultField[]>(
 
 type GitlogError = ExecException | string | null;
 
+type CommitBase<Field extends string> = Record<Field, string>;
+type CommitBaseWithFiles<Field extends string> = Record<
+  Field | "status",
+  string
+> & { files: string[] };
+
 function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
   userOptions: GitlogOptions<Fields> & { nameStatus: false },
-  cb: (err: GitlogError, commits: Record<Fields[number], string>[]) => void
+  cb: (err: GitlogError, commits: CommitBase<Fields[number]>[]) => void
 ): void;
 
 function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
   userOptions: GitlogOptions<Fields>,
-  cb: (
-    err: GitlogError,
-    commits: Record<Fields[number] | "files" | "status", string>[]
-  ) => void
+  cb: (err: GitlogError, commits: CommitBaseWithFiles<Fields[number]>[]) => void
 ): void;
 
 function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
   userOptions: GitlogOptions<Fields> & { nameStatus: false }
-): Record<Fields[number], string>[];
+): CommitBase<Fields[number]>[];
 
 function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
   userOptions: GitlogOptions<Fields>
-): Record<Fields[number] | "files" | "status", string>[];
+): CommitBaseWithFiles<Fields[number]>[];
 
 function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
   userOptions: GitlogOptions<Fields>,
-  cb?: (err: GitlogError, commits: Record<Fields[number], string>[]) => void
-): Record<Fields[number], string>[] | void {
+  cb?:
+    | ((err: GitlogError, commits: CommitBase<Fields[number]>[]) => void)
+    | ((
+        err: GitlogError,
+        commits: CommitBaseWithFiles<Fields[number]>[]
+      ) => void)
+): CommitBase<Fields[number]>[] | CommitBaseWithFiles<Fields[number]>[] | void {
   if (!userOptions.repo) {
     throw new Error("Repo required!");
   }
@@ -343,27 +351,26 @@ function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
 }
 
 export function gitlogPromise<
-  Fields extends readonly CommitField[] = DefaultField[],
-  Commit extends Record<Fields[number], string> = Record<Fields[number], string>
->(options: GitlogOptions<Fields> & { nameStatus: false }): Promise<Commit[]>;
+  Fields extends readonly CommitField[] = DefaultField[]
+>(
+  options: GitlogOptions<Fields> & { nameStatus: false }
+): Promise<CommitBase<Fields[number]>[]>;
 
 export function gitlogPromise<
-  Fields extends readonly CommitField[] = DefaultField[],
-  Commit extends Record<Fields[number] | "files" | "status", string> = Record<
-    Fields[number] | "files" | "status",
-    string
-  >
->(options: GitlogOptions<Fields>): Promise<Commit[]>;
+  Fields extends readonly CommitField[] = DefaultField[]
+>(
+  options: GitlogOptions<Fields>
+): Promise<CommitBaseWithFiles<Fields[number]>[]>;
+
 export function gitlogPromise<
-  Fields extends readonly CommitField[] = DefaultField[],
-  Commit extends Record<Fields[number], string> = Record<Fields[number], string>
->(options: GitlogOptions<Fields>): Promise<Commit[]> {
-  return new Promise<Commit[]>((resolve, reject) => {
+  Fields extends readonly CommitField[] = DefaultField[]
+>(options: GitlogOptions<Fields>): Promise<CommitBase<Fields[number]>[]> {
+  return new Promise((resolve, reject) => {
     gitlog(options, (err, commits) => {
       if (err) {
         reject(err);
       } else {
-        resolve(commits as Commit[]);
+        resolve(commits);
       }
     });
   });
