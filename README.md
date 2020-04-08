@@ -197,12 +197,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/afram"><img src="https://avatars0.githubusercontent.com/u/2238230?v=4" width="100px;" alt=""/><br /><sub><b>Marwan Butrous</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=afram" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/FishOrBear"><img src="https://avatars0.githubusercontent.com/u/19372111?v=4" width="100px;" alt=""/><br /><sub><b>FishOrBear</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=FishOrBear" title="Code">💻</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
