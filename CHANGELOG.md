@@ -1,3 +1,20 @@
+# v3.3.5 (Wed Apr 08 2020)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, null[@FishOrBear](https://github.com/FishOrBear), for all your work!
+
+#### 🐛 Bug Fix
+
+- Update index.ts [#49](https://github.com/domharrington/node-gitlog/pull/49) ([@FishOrBear](https://github.com/FishOrBear) [@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 2
+
+- [@FishOrBear](https://github.com/FishOrBear)
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v3.3.4 (Tue Apr 07 2020)
 
 #### 🐛 Bug Fix
