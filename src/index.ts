@@ -29,7 +29,13 @@ export type CommitField = keyof typeof fieldMap;
 const notOptFields = ["status", "files"] as const;
 type NotOptField = typeof notOptFields[number];
 
-const defaultFields = ["abbrevHash", "hash", "subject", "authorName", "authorDate"] as const;
+const defaultFields = [
+  "abbrevHash",
+  "hash",
+  "subject",
+  "authorName",
+  "authorDate"
+] as const;
 type DefaultField = typeof defaultFields[number];
 
 export interface GitlogOptions<
