@@ -34,7 +34,7 @@ const defaultFields = [
   "hash",
   "subject",
   "authorName",
-  "authorDate"
+  "authorDate",
 ] as const;
 type DefaultField = typeof defaultFields[number];
 
