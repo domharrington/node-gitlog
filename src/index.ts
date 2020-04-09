@@ -38,9 +38,7 @@ const defaultFields = [
 ] as const;
 type DefaultField = typeof defaultFields[number];
 
-export interface GitlogOptions<
-  Fields extends readonly CommitField[] = DefaultField[]
-> {
+export interface GitlogOptions<Fields extends string = DefaultField> {
   /** The location of the repo */
   repo: string;
   /**
@@ -68,7 +66,7 @@ export interface GitlogOptions<
    */
   number?: number;
   /** An array of fields to return from the log */
-  fields?: Fields;
+  fields?: readonly Fields[];
   /**
    * Below fields was returned from the log:
    *
@@ -104,7 +102,7 @@ export interface GitlogOptions<
 
 const defaultOptions = {
   number: 10,
-  fields: (defaultFields as unknown) as readonly CommitField[],
+  fields: defaultFields,
   nameStatus: true,
   includeMergeCommitFiles: false,
   findCopiesHarder: false,
@@ -112,9 +110,9 @@ const defaultOptions = {
 };
 
 /** Add optional parameter to command */
-function addOptional<Fields extends readonly CommitField[] = DefaultField[]>(
+function addOptional<Field extends string = DefaultField>(
   command: string,
-  options: GitlogOptions<Fields>
+  options: GitlogOptions<Field>
 ) {
   let commandWithOptions = command;
   const cmdOptional = [
@@ -220,8 +218,8 @@ const parseCommits = <T extends string>(
 };
 
 /** Run "git log" and return the result as JSON */
-function createCommand<T extends readonly CommitField[] = DefaultField[]>(
-  options: GitlogOptions<T> & typeof defaultOptions
+function createCommand<T extends CommitField | DefaultField = DefaultField>(
+  options: GitlogOptions<T>
 ) {
   // Start constructing command
   let command = "git log ";
@@ -246,13 +244,15 @@ function createCommand<T extends readonly CommitField[] = DefaultField[]>(
   command += ' --pretty="@begin@';
 
   // Iterating through the fields and adding them to the custom format
-  options.fields.forEach((field) => {
-    if (!fieldMap[field] && notOptFields.indexOf(field as NotOptField) === -1) {
-      throw new Error(`Unknown field: ${field}`);
-    }
+  if (options.fields) {
+    options.fields.forEach((field) => {
+      if (!fieldMap[field] && !notOptFields.includes(field as any)) {
+        throw new Error(`Unknown field: ${field}`);
+      }
 
-    command += delimiter + fieldMap[field];
-  });
+      command += delimiter + fieldMap[field];
+    });
+  }
 
   // Close custom format
   command += '@end@"';
@@ -284,33 +284,30 @@ type CommitBaseWithFiles<Field extends string> = Record<
   string
 > & { files: string[] };
 
-function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
-  userOptions: GitlogOptions<Fields> & { nameStatus: false },
-  cb: (err: GitlogError, commits: CommitBase<Fields[number]>[]) => void
+function gitlog<Field extends CommitField = DefaultField>(
+  userOptions: GitlogOptions<Field> & { nameStatus: false },
+  cb: (err: GitlogError, commits: CommitBase<Field>[]) => void
 ): void;
 
-function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
-  userOptions: GitlogOptions<Fields>,
-  cb: (err: GitlogError, commits: CommitBaseWithFiles<Fields[number]>[]) => void
+function gitlog<Field extends CommitField = DefaultField>(
+  userOptions: GitlogOptions<Field>,
+  cb: (err: GitlogError, commits: CommitBaseWithFiles<Field>[]) => void
 ): void;
 
-function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
-  userOptions: GitlogOptions<Fields> & { nameStatus: false }
-): CommitBase<Fields[number]>[];
+function gitlog<Field extends CommitField = DefaultField>(
+  userOptions: GitlogOptions<Field> & { nameStatus: false }
+): CommitBase<Field>[];
 
-function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
-  userOptions: GitlogOptions<Fields>
-): CommitBaseWithFiles<Fields[number]>[];
+function gitlog<Field extends CommitField = DefaultField>(
+  userOptions: GitlogOptions<Field>
+): CommitBaseWithFiles<Field>[];
 
-function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
-  userOptions: GitlogOptions<Fields>,
+function gitlog<Field extends CommitField = DefaultField>(
+  userOptions: GitlogOptions<Field>,
   cb?:
-    | ((err: GitlogError, commits: CommitBase<Fields[number]>[]) => void)
-    | ((
-        err: GitlogError,
-        commits: CommitBaseWithFiles<Fields[number]>[]
-      ) => void)
-): CommitBase<Fields[number]>[] | CommitBaseWithFiles<Fields[number]>[] | void {
+    | ((err: GitlogError, commits: CommitBase<Field>[]) => void)
+    | ((err: GitlogError, commits: CommitBaseWithFiles<Field>[]) => void)
+): CommitBase<Field>[] | CommitBaseWithFiles<Field>[] | void {
   if (!userOptions.repo) {
     throw new Error("Repo required!");
   }
@@ -321,7 +318,7 @@ function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
 
   // Set defaults
   const options = {
-    ...defaultOptions,
+    ...(defaultOptions as any),
     ...userOptions,
   };
   const execOptions = { cwd: userOptions.repo, ...userOptions.execOptions };
@@ -356,21 +353,17 @@ function gitlog<Fields extends readonly CommitField[] = DefaultField[]>(
   });
 }
 
-export function gitlogPromise<
-  Fields extends readonly CommitField[] = DefaultField[]
->(
-  options: GitlogOptions<Fields> & { nameStatus: false }
-): Promise<CommitBase<Fields[number]>[]>;
+export function gitlogPromise<Field extends CommitField = DefaultField>(
+  options: GitlogOptions<Field> & { nameStatus: false }
+): Promise<CommitBase<Field>[]>;
 
-export function gitlogPromise<
-  Fields extends readonly CommitField[] = DefaultField[]
->(
-  options: GitlogOptions<Fields>
-): Promise<CommitBaseWithFiles<Fields[number]>[]>;
+export function gitlogPromise<Field extends CommitField = DefaultField>(
+  options: GitlogOptions<Field>
+): Promise<CommitBaseWithFiles<Field>[]>;
 
-export function gitlogPromise<
-  Fields extends readonly CommitField[] = DefaultField[]
->(options: GitlogOptions<Fields>): Promise<CommitBase<Fields[number]>[]> {
+export function gitlogPromise<Field extends CommitField = DefaultField>(
+  options: GitlogOptions<Field>
+): Promise<CommitBase<Field>[]> {
   return new Promise((resolve, reject) => {
     gitlog(options, (err, commits) => {
       if (err) {
