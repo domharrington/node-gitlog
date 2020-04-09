@@ -40,6 +40,42 @@ gitlog(options)
   .catch((err) => console.log(err));
 ```
 
+`gitlog` comes with full typescript support!
+
+```ts
+import gitlog, { GitlogOptions } from "gitlog";
+
+// Option 1: Just use the function, returned commit type has specified fields
+gitlog({
+  repo: "foo",
+  fields: ["subject", "authorName", "authorDate"],
+});
+
+// Option 2: Use Options type to create options
+const options: GitlogOptions<"subject" | "authorName" | "authorDate"> = {
+  repo: "foo",
+  fields: ["subject", "authorName", "authorDate"],
+};
+
+gitlog(options);
+
+// Option 3: Typescript Magic
+const options = {
+  repo: "foo",
+  fields: ["subject", "authorName", "authorDate"] as const,
+};
+
+gitlog(options);
+
+// NOT SUPPORTED: Without "as const" gitlog can't create a good return type
+const options = {
+  repo: "foo",
+  fields: ["subject", "authorName", "authorDate"],
+};
+
+gitlog(options);
+```
+
 ## Options
 
 See [git log](http://git-scm.com/docs/git-log)
@@ -203,6 +239,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
