@@ -1,3 +1,15 @@
+# v3.3.6 (Thu Apr 09 2020)
+
+#### 🐛 Bug Fix
+
+- Easier to use option type [#51](https://github.com/domharrington/node-gitlog/pull/51) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v3.3.5 (Wed Apr 08 2020)
 
 :tada: This release contains work from a new contributor! :tada:
