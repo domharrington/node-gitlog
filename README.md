@@ -14,7 +14,7 @@ npm install gitlog --save
 ## Usage
 
 ```js
-const gitlog = require("gitlog");
+const gitlog = require("gitlog").default;
 
 const options = {
   repo: __dirname + "/test-repo-folder",
@@ -34,8 +34,10 @@ gitlog(options, function (error, commits) {
   console.log(commits);
 });
 
+const { gitlogPromise } = require("gitlog");
+
 // Asynchronous (with Promise)
-gitlog(options)
+gitlogPromise(options)
   .then((commits) => console.log(commits))
   .catch((err) => console.log(err));
 ```
