@@ -1,3 +1,15 @@
+# v4.0.0 (Mon Apr 13 2020)
+
+#### 💥 Breaking Change
+
+- update readme to fix cjs usage [#53](https://github.com/domharrington/node-gitlog/pull/53) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v3.3.6 (Thu Apr 09 2020)
 
 #### 🐛 Bug Fix
