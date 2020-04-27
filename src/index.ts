@@ -124,17 +124,20 @@ function addOptional<Field extends string = DefaultField>(
     "committer",
   ] as const;
 
+  const addOption = (option: string) => (value: string) => {
+    commandWithOptions += ` --${option}="${value}"`;
+  };
+
   for (let i = cmdOptional.length; i--; ) {
     const commandOption = cmdOptional[i];
     const flagOptions = options[commandOption];
 
     if (flagOptions) {
       if (Array.isArray(flagOptions)) {
-        flagOptions.map(flagOption => {
-          commandWithOptions += ` --${commandOption}="${flagOption}"`;
-        })
+        const addMultiOption = addOption(commandOption);
+        flagOptions.forEach(addMultiOption);
       } else {
-        commandWithOptions += ` --${commandOption}="${flagOptions}"`;
+        addOption(commandOption)(flagOptions);
       }
     }
   }

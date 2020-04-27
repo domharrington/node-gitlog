@@ -213,11 +213,11 @@ describe("gitlog", () => {
   it("returns commits only by multiple authors", (done) => {
     const command =
       `cd ${testRepoLocation}` +
-      '&& touch new-file' +
-      '&& git add new-file' +
+      "&& touch new-file" +
+      "&& git add new-file" +
       '&& git commit -m "New commit" --author="A U Thor <author@example.com>"' +
-      '&& touch loki-file' +
-      '&& git add loki-file' +
+      "&& touch loki-file" +
+      "&& git add loki-file" +
       '&& git commit -m "loki commit" --author="A U Loki <loki@example.com>"';
     const authors = ["A U Thor", "A U Loki"];
 
@@ -241,8 +241,8 @@ describe("gitlog", () => {
   it("returns commits only by committer", (done) => {
     const command =
       `cd ${testRepoLocation} ` +
-      '&& touch new-file ' +
-      '&& git add new-file ' +
+      "&& touch new-file " +
+      "&& git add new-file " +
       '&& git -c "user.name=A U Thor" -c "user.email=author@example.com" commit -m "New commit"';
     const committer = "A U Thor";
 
@@ -251,7 +251,7 @@ describe("gitlog", () => {
       const commits = gitlog({
         repo: testRepoLocation,
         committer,
-        fields:  ["committerName"],
+        fields: ["committerName"],
       });
 
       expect.assertions(1);
@@ -266,11 +266,11 @@ describe("gitlog", () => {
   it("returns commits only by multiple committers", (done) => {
     const command =
       `cd ${testRepoLocation} ` +
-      '&& touch new-file ' +
-      '&& git add new-file ' +
+      "&& touch new-file " +
+      "&& git add new-file " +
       '&& git -c "user.name=A U Thor" -c "user.email=author@example.com"  commit -m "New commit"' +
-      '&& touch loki-file ' +
-      '&& git add loki-file ' +
+      "&& touch loki-file " +
+      "&& git add loki-file " +
       '&& git -c "user.name=A U Loki" -c "user.email=loki@example.com"  commit -m "loki commit"';
     const committer = ["A U Thor", "A U Loki"];
 
@@ -285,7 +285,7 @@ describe("gitlog", () => {
       expect.assertions(2);
       commits.forEach((commit) => {
         expect(committer.includes(commit.committerName)).toBe(true);
-      });      
+      });
 
       done();
     });
