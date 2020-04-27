@@ -85,9 +85,9 @@ export interface GitlogOptions<Fields extends string = DefaultField> {
   /** File filter for the git log command */
   file?: string;
   /** Limit the commits output to ones with author header lines that match the specified pattern. */
-  author?: string;
+  author?: string | string[];
   /** Limit the commits output to ones with committer header lines that match the specified pattern. */
-  committer?: string;
+  committer?: string | string[];
   /** Show commits more recent than a specific date. */
   since?: string;
   /** Show commits more recent than a specific date. */
@@ -125,8 +125,17 @@ function addOptional<Field extends string = DefaultField>(
   ] as const;
 
   for (let i = cmdOptional.length; i--; ) {
-    if (options[cmdOptional[i]]) {
-      commandWithOptions += ` --${cmdOptional[i]}="${options[cmdOptional[i]]}"`;
+    const commandOption = cmdOptional[i];
+    const flagOptions = options[commandOption];
+
+    if (flagOptions) {
+      if (Array.isArray(flagOptions)) {
+        flagOptions.map(flagOption => {
+          commandWithOptions += ` --${commandOption}="${flagOption}"`;
+        })
+      } else {
+        commandWithOptions += ` --${commandOption}="${flagOptions}"`;
+      }
     }
   }
 

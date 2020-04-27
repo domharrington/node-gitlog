@@ -210,28 +210,82 @@ describe("gitlog", () => {
     });
   });
 
+  it("returns commits only by multiple authors", (done) => {
+    const command =
+      `cd ${testRepoLocation}` +
+      '&& touch new-file' +
+      '&& git add new-file' +
+      '&& git commit -m "New commit" --author="A U Thor <author@example.com>"' +
+      '&& touch loki-file' +
+      '&& git add loki-file' +
+      '&& git commit -m "loki commit" --author="A U Loki <loki@example.com>"';
+    const authors = ["A U Thor", "A U Loki"];
+
+    // Adding a new commit by different author
+    exec(command, () => {
+      const commits = gitlog({
+        repo: testRepoLocation,
+        author: authors,
+        fields: ["authorName"],
+      });
+
+      expect.assertions(2);
+      commits.forEach((commit) => {
+        expect(authors.includes(commit.authorName)).toBe(true);
+      });
+
+      done();
+    });
+  });
+
   it("returns commits only by committer", (done) => {
-    const defaults = ["committerName"] as const;
     const command =
       `cd ${testRepoLocation} ` +
-      `&& touch new-file ` +
-      `&& git add new-file ` +
-      `&& git commit -m "New commit" ` +
-      `--committer="A U Thor <author@example.com>"`;
-    const committer = "Your Name";
+      '&& touch new-file ' +
+      '&& git add new-file ' +
+      '&& git -c "user.name=A U Thor" -c "user.email=author@example.com" commit -m "New commit"';
+    const committer = "A U Thor";
 
     // Adding a new commit by different author
     exec(command, () => {
       const commits = gitlog({
         repo: testRepoLocation,
         committer,
-        fields: defaults,
+        fields:  ["committerName"],
       });
 
-      expect.assertions(10);
+      expect.assertions(1);
       commits.forEach((commit) => {
         expect(commit.committerName).toBe(committer);
       });
+
+      done();
+    });
+  });
+
+  it("returns commits only by multiple committers", (done) => {
+    const command =
+      `cd ${testRepoLocation} ` +
+      '&& touch new-file ' +
+      '&& git add new-file ' +
+      '&& git -c "user.name=A U Thor" -c "user.email=author@example.com"  commit -m "New commit"' +
+      '&& touch loki-file ' +
+      '&& git add loki-file ' +
+      '&& git -c "user.name=A U Loki" -c "user.email=loki@example.com"  commit -m "loki commit"';
+    const committer = ["A U Thor", "A U Loki"];
+
+    // Adding a new commit by different author
+    exec(command, () => {
+      const commits = gitlog({
+        repo: testRepoLocation,
+        committer,
+        fields: ["committerName", "subject"],
+      });
+
+      expect.assertions(2);
+      commits.forEach((commit) => {
+        expect(committer.includes(commit.committerName)).toBe(true);
+      });      
 
       done();
     });

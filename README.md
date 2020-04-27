@@ -101,6 +101,7 @@ Show commits older than a specific date.
 ### author/committer
 
 Limit the commits output to ones with author/committer header lines that match the specified pattern.
+Can also be an array of patterns/strings.
 
 ### nameStatus
 
