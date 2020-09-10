@@ -1,4 +1,4 @@
-import { exec, execSync, ExecSyncOptions, ExecException } from "child_process";
+import { execFile, execFileSync, ExecSyncOptions, ExecException } from "child_process";
 import { existsSync } from "fs";
 import createDebugger from "debug";
 
@@ -323,9 +323,11 @@ function gitlog<Field extends CommitField = DefaultField>(
   };
   const execOptions = { cwd: userOptions.repo, ...userOptions.execOptions };
   const command = createCommand(options);
+  
+  command = command.split(' ');
 
   if (!cb) {
-    const stdout = execSync(command, execOptions).toString();
+    const stdout = execFileSync(command[0], command.slice(1), execOptions).toString();
     const commits = stdout.split("@begin@");
 
     if (commits[0] === "") {
@@ -336,7 +338,7 @@ function gitlog<Field extends CommitField = DefaultField>(
     return parseCommits(commits, options.fields, options.nameStatus);
   }
 
-  exec(command, execOptions, (err, stdout, stderr) => {
+  execFile(command[0], command.slice(1), execOptions, (err, stdout, stderr) => {
     debug("stdout", stdout);
     const commits = stdout.split("@begin@");
 
