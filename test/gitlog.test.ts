@@ -58,23 +58,23 @@ describe("gitlog", () => {
     );
   });
 
-  it("returns 22 commits from repository with all=false", (done) => {
+  it("returns 25 commits from repository with all=false", (done) => {
     gitlog(
       { repo: testRepoLocation, all: false, number: 100 },
       (err, commits) => {
         expect(err).toBeNull();
-        expect(commits.length).toBe(22);
+        expect(commits.length).toBe(25);
         done();
       }
     );
   });
 
-  it("returns 23 commits from repository with all=true", (done) => {
+  it("returns 26 commits from repository with all=true", (done) => {
     gitlog(
       { repo: testRepoLocation, all: true, number: 100 },
       (err, commits) => {
         expect(err).toBeNull();
-        expect(commits.length).toBe(23);
+        expect(commits.length).toBe(26);
         done();
       }
     );
@@ -153,17 +153,6 @@ describe("gitlog", () => {
     expect(commits[0].files).not.toBeDefined();
   });
 
-  it("returns nameStatus fields", () => {
-    const commits = gitlog({ repo: testRepoLocation });
-
-    expect(commits[0].abbrevHash).toBeDefined();
-    expect(commits[0].subject).toBeDefined();
-    expect(commits[0].authorName).toBeDefined();
-    expect(commits[0].hash).toBeDefined();
-    expect(commits[0].status).toBeDefined();
-    expect(commits[0].files).toBeDefined();
-  });
-
   it('returns fields with "since" limit', () => {
     const commits = gitlog({ repo: testRepoLocation, since: "1 minutes ago" });
     expect(commits).toHaveLength(10);
@@ -237,14 +226,9 @@ describe("gitlog", () => {
     });
   });
 
-  it("returns A status for files that are added", () => {
-    const commits = gitlog({ repo: testRepoLocation });
-    expect(commits[1].status[0]).toBe("A");
-  });
-
   it("returns C100 status for files that are copied", () => {
     const commits = gitlog({ repo: testRepoLocation, findCopiesHarder: true });
-    expect(commits[1].status[0]).toBe("C100");
+    expect(commits[4].status[0]).toBe("C100");
   });
 
   it("returns merge commits files when includeMergeCommitFiles is true", () => {
@@ -252,25 +236,41 @@ describe("gitlog", () => {
       repo: testRepoLocation,
       includeMergeCommitFiles: true,
     });
-    expect(commits[0].files[0]).toBe("foo");
+    expect(commits[3].files[0]).toBe("foo");
   });
 
-  it("returns M status for files that are modified", () => {
-    const commits = gitlog({ repo: testRepoLocation });
-    expect(commits[3].status[0]).toBe("M");
-  });
+  describe("Only repo option", () => {
+    let commits: any[];
+    beforeAll(() => {
+      commits = gitlog({ repo: testRepoLocation });
+    });
 
-  it("returns D status for files that are deleted", () => {
-    const commits = gitlog({ repo: testRepoLocation });
-    expect(commits[4].status[0]).toBe("D");
-  });
+    it("returns nameStatus fields", () => {
+      expect(commits[0].abbrevHash).toBeDefined();
+      expect(commits[0].subject).toBeDefined();
+      expect(commits[0].authorName).toBeDefined();
+      expect(commits[0].hash).toBeDefined();
+      expect(commits[0].status).toBeDefined();
+      expect(commits[0].files).toBeDefined();
+    });
 
-  it("returns author name correctly", () => {
-    const commits = gitlog({ repo: testRepoLocation });
+    it("returns A status for files that are added", () => {
+      expect(commits[4].status[0]).toBe("A");
+    });
 
-    expect.assertions(10);
-    commits.forEach((commit) => {
-      expect(commit.authorName).toBe("Your Name");
+    it("returns M status for files that are modified", () => {
+      expect(commits[6].status[0]).toBe("M");
+    });
+
+    it("returns D status for files that are deleted", () => {
+      expect(commits[7].status[0]).toBe("D");
+    });
+
+    it("returns author name correctly", () => {
+      expect.assertions(10);
+      commits.forEach((commit) => {
+        expect(commit.authorName).toBe("Your Name");
+      });
     });
   });
 
@@ -297,6 +297,27 @@ describe("gitlog", () => {
 
     expect(commits[0].body).toBeDefined();
     expect(commits[0].rawBody).toBeDefined();
+  });
+
+  it("should be able to get commit counts for a specific line only", () => {
+    const commitsForFirstLine = gitlog({
+      repo: testRepoLocation,
+      fileLineRange: {
+        file: "fileToModify",
+        startLine: 1,
+        endLine: 1,
+      },
+    });
+    expect(commitsForFirstLine.length).toBe(1);
+    const commitsForLastLine = gitlog({
+      repo: testRepoLocation,
+      fileLineRange: {
+        file: "fileToModify",
+        startLine: 20,
+        endLine: 20,
+      },
+    });
+    expect(commitsForLastLine.length).toBe(3);
   });
 
   afterAll(() => {

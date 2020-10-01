@@ -58,6 +58,23 @@ git checkout master
 git merge --no-edit --no-ff new-merge-branch
 git branch -d new-merge-branch
 
+# Modify specific lines
+touch fileToModify
+# Add contents large enough to break up diffs
+for i in {1..20}
+  do
+    printf "$i\n" >> fileToModify
+
+  done
+git add fileToModify
+git commit -m "added long content file"
+sed -i '' -e 's/2/4/g' ./fileToModify
+git add fileToModify
+git commit -m "Modify multiple parts of the file and come close to, but not the first line"
+sed -i '' -e 's/40/44/' ./fileToModify
+git add fileToModify
+git commit -m "Modify end of the file"
+
 # git symbolic-ref HEAD refs/heads/test-branch
 # rm .git/index
 # git clen -fdx
