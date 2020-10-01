@@ -1,3 +1,29 @@
+# v4.0.1 (Thu Oct 01 2020)
+
+:tada: This release contains work from new contributors! :tada:
+
+Thanks for all your work!
+
+:heart: Asjid Kalam ([@Asjidkalam](https://github.com/Asjidkalam))
+
+:heart: Jamie Slome ([@JamieSlome](https://github.com/JamieSlome))
+
+:heart: huntr-helper ([@huntr-helper](https://github.com/huntr-helper))
+
+#### 🐛 Bug Fix
+
+- Revert "Security Fix for RCE on "gitlogplus" - huntr.dev" [#62](https://github.com/domharrington/node-gitlog/pull/62) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+- Security Fix for RCE on "gitlogplus" - huntr.dev [#59](https://github.com/domharrington/node-gitlog/pull/59) ([@Asjidkalam](https://github.com/Asjidkalam) [@JamieSlome](https://github.com/JamieSlome) [@huntr-helper](https://github.com/huntr-helper))
+
+#### Authors: 4
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+- Asjid Kalam ([@Asjidkalam](https://github.com/Asjidkalam))
+- huntr-helper ([@huntr-helper](https://github.com/huntr-helper))
+- Jamie Slome ([@JamieSlome](https://github.com/JamieSlome))
+
+---
+
 # v4.0.0 (Mon Apr 13 2020)
 
 #### 💥 Breaking Change
