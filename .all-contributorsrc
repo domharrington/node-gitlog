@@ -165,6 +165,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Asjidkalam",
+      "name": "Asjid Kalam",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/16708391?v=4",
+      "profile": "https://github.com/Asjidkalam",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "JamieSlome",
+      "name": "Jamie Slome",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/55323451?v=4",
+      "profile": "https://418sec.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "huntr-helper",
+      "name": "huntr-helper",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/61279246?v=4",
+      "profile": "https://huntr.dev/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
