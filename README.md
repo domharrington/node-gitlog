@@ -243,6 +243,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Asjidkalam"><img src="https://avatars1.githubusercontent.com/u/16708391?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Asjid Kalam</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=Asjidkalam" title="Code">💻</a></td>
     <td align="center"><a href="https://418sec.com/"><img src="https://avatars0.githubusercontent.com/u/55323451?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jamie Slome</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=JamieSlome" title="Code">💻</a></td>
     <td align="center"><a href="https://huntr.dev/"><img src="https://avatars0.githubusercontent.com/u/61279246?v=4?s=100" width="100px;" alt=""/><br /><sub><b>huntr-helper</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=huntr-helper" title="Code">💻</a></td>
+    <td align="center"><a href="https://salmonmode.github.io/"><img src="https://avatars3.githubusercontent.com/u/13908130?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chris NeJame</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Documentation">📖</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Tests">⚠️</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Code">💻</a></td>
   </tr>
 </table>
 

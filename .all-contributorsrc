@@ -192,6 +192,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SalmonMode",
+      "name": "Chris NeJame",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/13908130?v=4",
+      "profile": "https://salmonmode.github.io/",
+      "contributions": [
+        "doc",
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
