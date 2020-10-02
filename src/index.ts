@@ -29,6 +29,20 @@ export type CommitField = keyof typeof fieldMap;
 const notOptFields = ["status", "files"] as const;
 type NotOptField = typeof notOptFields[number];
 
+export interface FileLineRange {
+  /** Will be pass as -L <startLine>,<endLine>:<file> */
+
+  /** The file to get the commits for */
+  file: string;
+  /** The number of the first line in the desired range */
+  startLine: number;
+  /**
+   * Either the absolute line number for the end of the desired range,
+   * or the offset from the startLine
+   */
+  endLine: number | string;
+}
+
 const defaultFields = [
   "abbrevHash",
   "hash",
@@ -82,6 +96,8 @@ export interface GitlogOptions<Fields extends string = DefaultField> {
    * the whole history leading to the current commit).
    */
   branch?: string;
+  /** Range of lines for a given file to find the commits for */
+  fileLineRange?: FileLineRange;
   /** File filter for the git log command */
   file?: string;
   /** Limit the commits output to ones with author header lines that match the specified pattern. */
@@ -263,8 +279,12 @@ function createCommand<T extends CommitField | DefaultField = DefaultField>(
   }
 
   // File and file status
-  if (options.nameStatus) {
+  if (options.nameStatus && !options.fileLineRange) {
     command += " --name-status";
+  }
+
+  if (options.fileLineRange) {
+    command += ` -L ${options.fileLineRange.startLine},${options.fileLineRange.endLine}:${options.fileLineRange.file}`;
   }
 
   if (options.file) {
