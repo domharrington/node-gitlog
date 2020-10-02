@@ -1,3 +1,19 @@
+# v4.0.2 (Fri Oct 02 2020)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, Chris NeJame ([@SalmonMode](https://github.com/SalmonMode)), for all your work!
+
+#### 🐛 Bug Fix
+
+- Add support for getting commits of line range [#61](https://github.com/domharrington/node-gitlog/pull/61) ([@SalmonMode](https://github.com/SalmonMode))
+
+#### Authors: 1
+
+- Chris NeJame ([@SalmonMode](https://github.com/SalmonMode))
+
+---
+
 # v4.0.1 (Thu Oct 01 2020)
 
 :tada: This release contains work from new contributors! :tada:
