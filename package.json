@@ -1,6 +1,6 @@
 {
   "name": "gitlog",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Git log parser for Node.JS",
   "module": "dist/gitlog.esm.js",
   "main": "dist/index.js",
