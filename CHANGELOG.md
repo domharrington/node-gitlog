@@ -1,3 +1,15 @@
+# v4.0.3 (Mon Oct 05 2020)
+
+#### 🐛 Bug Fix
+
+- ensure large amount of renames doesn't break git log [#63](https://github.com/domharrington/node-gitlog/pull/63) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 1
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v4.0.2 (Fri Oct 02 2020)
 
 :tada: This release contains work from a new contributor! :tada:
