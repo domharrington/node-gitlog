@@ -238,7 +238,7 @@ function createCommand<T extends CommitField | DefaultField = DefaultField>(
   options: GitlogOptions<T>
 ) {
   // Start constructing command
-  let command = "git log ";
+  let command = "git log -l0 ";
 
   if (options.findCopiesHarder) {
     command += "--find-copies-harder ";
