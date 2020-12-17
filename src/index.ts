@@ -126,7 +126,7 @@ const defaultOptions = {
 };
 
 /** Add optional parameter to command */
-function addOptionalArgument<Field extends string = DefaultField>(
+function addOptionalArguments<Field extends string = DefaultField>(
   command: string[],
   options: GitlogOptions<Field>
 ) {
@@ -254,7 +254,7 @@ function createCommandArguments<T extends CommitField | DefaultField = DefaultFi
 
   command.push(`-n ${options.number}`);
 
-  command = addOptionalArgument(command, options);
+  command = addOptionalArguments(command, options);
 
   // Start of custom format
   let prettyArgument: string = '--pretty=@begin@';
