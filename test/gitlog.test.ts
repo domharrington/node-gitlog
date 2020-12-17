@@ -1,5 +1,6 @@
 /* eslint-disable handle-callback-err, no-unused-expressions */
 
+import fs from "fs";
 import { exec, execSync } from "child_process";
 import gitlog, { gitlogPromise } from "../src";
 
@@ -318,6 +319,20 @@ describe("gitlog", () => {
       },
     });
     expect(commitsForLastLine.length).toBe(3);
+  });
+
+  it("should not execute shell commands", (done) => {
+    gitlog({
+      repo: testRepoLocation,
+      branch: "$(touch ../exploit)"
+    }, () => {
+      const exists = fs.existsSync("./test/exploit");
+      expect(exists).toBe(false);
+      if (exists) {
+        fs.unlinkSync("./test/exploit");
+      }
+      done();
+    });
   });
 
   afterAll(() => {
