@@ -1,4 +1,9 @@
-import { execFile, execFileSync, ExecSyncOptions, ExecException } from "child_process";
+import {
+  execFile,
+  execFileSync,
+  ExecSyncOptions,
+  ExecException,
+} from "child_process";
 import { existsSync } from "fs";
 import createDebugger from "debug";
 
@@ -140,7 +145,7 @@ function addOptionalArguments<Field extends string = DefaultField>(
     "committer",
   ] as const;
 
-  for (let i = cmdOptional.length; i--;) {
+  for (let i = cmdOptional.length; i--; ) {
     if (options[cmdOptional[i]]) {
       commandWithOptions.push(`--${cmdOptional[i]}=${options[cmdOptional[i]]}`);
     }
@@ -234,9 +239,9 @@ const parseCommits = <T extends string>(
 };
 
 /** Run "git log" and return the result as JSON */
-function createCommandArguments<T extends CommitField | DefaultField = DefaultField>(
-  options: GitlogOptions<T>
-) {
+function createCommandArguments<
+  T extends CommitField | DefaultField = DefaultField
+>(options: GitlogOptions<T>) {
   // Start constructing command
   let command: string[] = ["log", "-l0"];
 
@@ -257,7 +262,7 @@ function createCommandArguments<T extends CommitField | DefaultField = DefaultFi
   command = addOptionalArguments(command, options);
 
   // Start of custom format
-  let prettyArgument: string = '--pretty=@begin@';
+  let prettyArgument: string = "--pretty=@begin@";
 
   // Iterating through the fields and adding them to the custom format
   if (options.fields) {
@@ -271,7 +276,7 @@ function createCommandArguments<T extends CommitField | DefaultField = DefaultFi
   }
 
   // Close custom format
-  prettyArgument += '@end@';
+  prettyArgument += "@end@";
   command.push(prettyArgument);
 
   // Append branch (revision range) if specified
@@ -285,7 +290,9 @@ function createCommandArguments<T extends CommitField | DefaultField = DefaultFi
   }
 
   if (options.fileLineRange) {
-    command.push(`-L ${options.fileLineRange.startLine},${options.fileLineRange.endLine}:${options.fileLineRange.file}`);
+    command.push(
+      `-L ${options.fileLineRange.startLine},${options.fileLineRange.endLine}:${options.fileLineRange.file}`
+    );
   }
 
   if (options.file) {
@@ -347,7 +354,11 @@ function gitlog<Field extends CommitField = DefaultField>(
   const commandArguments = createCommandArguments(options);
 
   if (!cb) {
-    const stdout = execFileSync("git", commandArguments, execOptions).toString();
+    const stdout = execFileSync(
+      "git",
+      commandArguments,
+      execOptions
+    ).toString();
     const commits = stdout.split("@begin@");
 
     if (commits[0] === "") {
