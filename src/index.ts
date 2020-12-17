@@ -1,4 +1,4 @@
-import { exec, execSync, ExecSyncOptions, ExecException } from "child_process";
+import { execFile, execFileSync, ExecSyncOptions, ExecException } from "child_process";
 import { existsSync } from "fs";
 import createDebugger from "debug";
 
@@ -126,8 +126,8 @@ const defaultOptions = {
 };
 
 /** Add optional parameter to command */
-function addOptional<Field extends string = DefaultField>(
-  command: string,
+function addOptionalArgument<Field extends string = DefaultField>(
+  command: string[],
   options: GitlogOptions<Field>
 ) {
   let commandWithOptions = command;
@@ -140,9 +140,9 @@ function addOptional<Field extends string = DefaultField>(
     "committer",
   ] as const;
 
-  for (let i = cmdOptional.length; i--; ) {
+  for (let i = cmdOptional.length; i--;) {
     if (options[cmdOptional[i]]) {
-      commandWithOptions += ` --${cmdOptional[i]}="${options[cmdOptional[i]]}"`;
+      commandWithOptions.push(`--${cmdOptional[i]}=${options[cmdOptional[i]]}`);
     }
   }
 
@@ -234,30 +234,30 @@ const parseCommits = <T extends string>(
 };
 
 /** Run "git log" and return the result as JSON */
-function createCommand<T extends CommitField | DefaultField = DefaultField>(
+function createCommandArguments<T extends CommitField | DefaultField = DefaultField>(
   options: GitlogOptions<T>
 ) {
   // Start constructing command
-  let command = "git log -l0 ";
+  let command: string[] = ["log", "-l0"];
 
   if (options.findCopiesHarder) {
-    command += "--find-copies-harder ";
+    command.push("--find-copies-harder");
   }
 
   if (options.all) {
-    command += "--all ";
+    command.push("--all");
   }
 
   if (options.includeMergeCommitFiles) {
-    command += "-m ";
+    command.push("-m");
   }
 
-  command += `-n ${options.number}`;
+  command.push(`-n ${options.number}`);
 
-  command = addOptional(command, options);
+  command = addOptionalArgument(command, options);
 
   // Start of custom format
-  command += ' --pretty="@begin@';
+  let prettyArgument: string = '--pretty=@begin@';
 
   // Iterating through the fields and adding them to the custom format
   if (options.fields) {
@@ -266,29 +266,31 @@ function createCommand<T extends CommitField | DefaultField = DefaultField>(
         throw new Error(`Unknown field: ${field}`);
       }
 
-      command += delimiter + fieldMap[field];
+      prettyArgument += delimiter + fieldMap[field];
     });
   }
 
   // Close custom format
-  command += '@end@"';
+  prettyArgument += '@end@';
+  command.push(prettyArgument);
 
   // Append branch (revision range) if specified
   if (options.branch) {
-    command += ` ${options.branch}`;
+    command.push(options.branch);
   }
 
   // File and file status
   if (options.nameStatus && !options.fileLineRange) {
-    command += " --name-status";
+    command.push("--name-status");
   }
 
   if (options.fileLineRange) {
-    command += ` -L ${options.fileLineRange.startLine},${options.fileLineRange.endLine}:${options.fileLineRange.file}`;
+    command.push(`-L ${options.fileLineRange.startLine},${options.fileLineRange.endLine}:${options.fileLineRange.file}`);
   }
 
   if (options.file) {
-    command += ` -- ${options.file}`;
+    command.push("--");
+    command.push(options.file);
   }
 
   debug("command", options.execOptions, command);
@@ -342,10 +344,10 @@ function gitlog<Field extends CommitField = DefaultField>(
     ...userOptions,
   };
   const execOptions = { cwd: userOptions.repo, ...userOptions.execOptions };
-  const command = createCommand(options);
+  const commandArguments = createCommandArguments(options);
 
   if (!cb) {
-    const stdout = execSync(command, execOptions).toString();
+    const stdout = execFileSync("git", commandArguments, execOptions).toString();
     const commits = stdout.split("@begin@");
 
     if (commits[0] === "") {
@@ -356,7 +358,7 @@ function gitlog<Field extends CommitField = DefaultField>(
     return parseCommits(commits, options.fields, options.nameStatus);
   }
 
-  exec(command, execOptions, (err, stdout, stderr) => {
+  execFile("git", commandArguments, execOptions, (err, stdout, stderr) => {
     debug("stdout", stdout);
     const commits = stdout.split("@begin@");
 
