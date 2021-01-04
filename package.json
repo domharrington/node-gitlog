@@ -29,21 +29,22 @@
     "node": ">= 10.x"
   },
   "devDependencies": {
-    "@auto-it/all-contributors": "^9.26.5",
-    "@auto-it/first-time-contributor": "^9.26.5",
+    "@auto-it/all-contributors": "^10.4.2",
+    "@auto-it/first-time-contributor": "^10.4.2",
+    "@auto-it/pr-body-labels": "^10.4.2",
     "@types/debug": "^4.1.5",
     "@types/jest": "^25.2.1",
     "all-contributors-cli": "^6.14.1",
-    "auto": "^9.26.5",
-    "husky": "^4.2.3",
-    "lint-staged": "^10.1.2",
-    "prettier": "^2.0.4",
-    "tsdx": "^0.13.1",
-    "typescript": "^3.8.3"
+    "auto": "^9.61.0",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1",
+    "tsdx": "^0.13.3",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "tslib": "^1.11.1"
+    "tslib": "^1.14.1"
   },
   "husky": {
     "hooks": {
@@ -58,7 +59,8 @@
       "npm",
       "released",
       "first-time-contributor",
-      "all-contributors"
+      "all-contributors",
+      "pr-body-labels"
     ]
   }
 }

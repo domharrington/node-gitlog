@@ -322,17 +322,20 @@ describe("gitlog", () => {
   });
 
   it("should not execute shell commands", (done) => {
-    gitlog({
-      repo: testRepoLocation,
-      branch: "$(touch ../exploit)"
-    }, () => {
-      const exists = fs.existsSync("./test/exploit");
-      expect(exists).toBe(false);
-      if (exists) {
-        fs.unlinkSync("./test/exploit");
+    gitlog(
+      {
+        repo: testRepoLocation,
+        branch: "$(touch ../exploit)",
+      },
+      () => {
+        const exists = fs.existsSync("./test/exploit");
+        expect(exists).toBe(false);
+        if (exists) {
+          fs.unlinkSync("./test/exploit");
+        }
+        done();
       }
-      done();
-    });
+    );
   });
 
   afterAll(() => {
