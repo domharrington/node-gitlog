@@ -9,7 +9,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "tsdx lint src test"
+    "lint": "tsdx lint src test",
+    "format": "prettier --write ."
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
@@ -51,7 +52,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md,ts,json}": "prettier --write"
+    "*.{js,css,md,ts,json}": "npm run format"
   },
   "auto": {
     "plugins": [
