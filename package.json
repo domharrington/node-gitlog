@@ -9,7 +9,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "tsdx lint src test"
+    "lint": "tsdx lint src test",
+    "format": "prettier --write ."
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
@@ -29,13 +30,12 @@
     "node": ">= 10.x"
   },
   "devDependencies": {
-    "@auto-it/all-contributors": "^10.4.2",
-    "@auto-it/first-time-contributor": "^10.4.2",
-    "@auto-it/pr-body-labels": "^10.4.2",
+    "@auto-it/all-contributors": "^10.5.0",
+    "@auto-it/first-time-contributor": "^10.5.0",
+    "@auto-it/pr-body-labels": "^10.5.0",
     "@types/debug": "^4.1.5",
     "@types/jest": "^25.2.1",
-    "all-contributors-cli": "^6.14.1",
-    "auto": "^9.61.0",
+    "auto": "^10.5.0",
     "husky": "^4.3.6",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
@@ -52,7 +52,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md,ts,json}": "prettier --write"
+    "*.{js,css,md,ts,json}": "npm run format"
   },
   "auto": {
     "plugins": [
