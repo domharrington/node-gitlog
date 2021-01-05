@@ -203,6 +203,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "ron-checkmarx",
+      "name": "Ron",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/67099202?v=4",
+      "profile": "https://github.com/ron-checkmarx",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
