@@ -1,7 +1,7 @@
 import {
   execFile,
   execFileSync,
-  ExecSyncOptions,
+  ExecFileSyncOptions,
   ExecException,
 } from "child_process";
 import { existsSync } from "fs";
@@ -118,7 +118,7 @@ export interface GitlogOptions<Fields extends string = DefaultField> {
   /** Show commits older than a specific date */
   before?: string;
   /** Specify some options to be passed to the .exec() method */
-  execOptions?: ExecSyncOptions;
+  execOptions?: ExecFileSyncOptions;
 }
 
 const defaultOptions = {
