@@ -1,3 +1,18 @@
+# v4.0.4 (Tue Jan 05 2021)
+
+#### 🐛 Bug Fix
+
+- Fix build + lint [#68](https://github.com/domharrington/node-gitlog/pull/68) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+- fix lint and run build/test/lint on PRs [#66](https://github.com/domharrington/node-gitlog/pull/66) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+- Patch command injection vulnerability [#65](https://github.com/domharrington/node-gitlog/pull/65) ([@ron-checkmarx](https://github.com/ron-checkmarx))
+
+#### Authors: 2
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+- Ron ([@ron-checkmarx](https://github.com/ron-checkmarx))
+
+---
+
 # v4.0.3 (Mon Oct 05 2020)
 
 #### 🐛 Bug Fix
