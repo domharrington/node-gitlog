@@ -178,6 +178,7 @@ An array of fields to return from the log, here are the possible options:
 - `subject` - commit message (first line)
 - `body` - commit body
 - `rawBody` - raw body (subject + body)
+- `tag` - raw tag information of commit
 
 Defaults to 'abbrevHash', 'hash', 'subject' and 'authorName'.
 

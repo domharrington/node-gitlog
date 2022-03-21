@@ -28,6 +28,7 @@ const fieldMap = {
   subject: "%s",
   body: "%b",
   rawBody: "%B",
+  tag: "%D",
 } as const;
 export type CommitField = keyof typeof fieldMap;
 
