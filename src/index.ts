@@ -309,10 +309,7 @@ function createCommandArguments<
 type GitlogError = ExecException | string | null;
 
 type CommitBase<Field extends string> = Record<Field, string>;
-type CommitBaseWithFiles<Field extends string> = Record<
-  Field | "status",
-  string
-> & { files: string[] };
+type CommitBaseWithFiles<Field extends string> = CommitBase<Field> & Record<"status" | "files", string[]>;
 
 function gitlog<Field extends CommitField = DefaultField>(
   userOptions: GitlogOptions<Field> & { nameStatus: false },
