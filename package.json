@@ -12,9 +12,6 @@
     "lint": "tsdx lint src test",
     "format": "prettier --write ."
   },
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/domharrington/node-gitlog.git"
