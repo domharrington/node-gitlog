@@ -1,3 +1,34 @@
+# v4.0.5 (Mon May 15 2023)
+
+:tada: This release contains work from a new contributor! :tada:
+
+Thank you, Vitali Lovich ([@vlovich](https://github.com/vlovich)), for all your work!
+
+### Release Notes
+
+#### Make sure that errors throw Error instead of string ([#92](https://github.com/domharrington/node-gitlog/pull/92))
+
+This release fixes how this library throws errors. Instead of throwing `string` it will throw an actual error. Implementations might need updating.
+
+---
+
+#### 🐛 Bug Fix
+
+- Make sure that errors throw Error instead of string [#92](https://github.com/domharrington/node-gitlog/pull/92) ([@vlovich](https://github.com/vlovich))
+- added tag field [#76](https://github.com/domharrington/node-gitlog/pull/76) ([@jigarzon](https://github.com/jigarzon))
+
+#### ⚠️ Pushed to `master`
+
+- fix build ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+#### Authors: 3
+
+- Andrew Lisowski ([@hipstersmoothie](https://github.com/hipstersmoothie))
+- Juan Ignacio Garzón ([@jigarzon](https://github.com/jigarzon))
+- Vitali Lovich ([@vlovich](https://github.com/vlovich))
+
+---
+
 # v4.0.4 (Tue Jan 05 2021)
 
 #### 🐛 Bug Fix
