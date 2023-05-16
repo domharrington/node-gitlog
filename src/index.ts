@@ -380,10 +380,11 @@ function gitlog<Field extends CommitField = DefaultField>(
 
     debug("commits", commits);
 
-    cb(
-      stderr || err,
-      parseCommits(commits, options.fields, options.nameStatus)
-    );
+    if (stderr) {
+      err = new Error(stderr);
+    }
+
+    cb(err, parseCommits(commits, options.fields, options.nameStatus));
   });
 }
 

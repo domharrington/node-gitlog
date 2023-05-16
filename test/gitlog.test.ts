@@ -36,6 +36,12 @@ describe("gitlog", () => {
     );
   });
 
+  it("throws an error when bad option - promise", async () => {
+    await expect(
+      gitlogPromise({ repo: testRepoLocation, branch: "not-a-branch" })
+    ).rejects.toBeInstanceOf(Error);
+  });
+
   it("returns 21 commits from specified branch", (done) => {
     gitlog(
       { repo: testRepoLocation, branch: "new-branch", number: 100 },
