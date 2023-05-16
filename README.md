@@ -247,6 +247,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://salmonmode.github.io/"><img src="https://avatars3.githubusercontent.com/u/13908130?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chris NeJame</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Documentation">📖</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Tests">⚠️</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ron-checkmarx"><img src="https://avatars2.githubusercontent.com/u/67099202?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ron</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=ron-checkmarx" title="Tests">⚠️</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=ron-checkmarx" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://www.linkedin.com/in/juanignaciogarzon/"><img src="https://avatars.githubusercontent.com/u/9467722?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Juan Ignacio Garzón</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=jigarzon" title="Documentation">📖</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=jigarzon" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
