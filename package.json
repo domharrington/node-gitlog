@@ -5,6 +5,9 @@
   "module": "dist/gitlog.esm.js",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
