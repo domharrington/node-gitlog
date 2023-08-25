@@ -9,6 +9,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
+    "pretest": "npm run lint",
     "lint": "tsdx lint src test",
     "format": "prettier --write ."
   },
