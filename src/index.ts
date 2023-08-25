@@ -2,7 +2,7 @@ import {
   execFile,
   execFileSync,
   ExecFileSyncOptions,
-  ExecFileException,
+  ExecException,
 } from "child_process";
 import { existsSync } from "fs";
 import createDebugger from "debug";
@@ -306,7 +306,7 @@ function createCommandArguments<
   return command;
 }
 
-type GitlogError = ExecFileException | null;
+type GitlogError = ExecException | null;
 
 type CommitBase<Field extends string> = Record<Field, string>;
 type CommitBaseWithFiles<Field extends string> = Record<

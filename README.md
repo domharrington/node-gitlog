@@ -2,9 +2,6 @@
 
 Git log parser for Node.JS
 
-[![build status](https://api.travis-ci.org/domharrington/node-gitlog.svg)](http://travis-ci.org/domharrington/node-gitlog)
-[![dependency status](https://david-dm.org/domharrington/node-gitlog.svg)](https://david-dm.org/domharrington/node-gitlog)
-
 ## Installation
 
 ```sh
