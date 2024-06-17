@@ -11,7 +11,7 @@ npm install gitlog --save
 ## Usage
 
 ```js
-const gitlog = require("gitlog").default;
+import gitlog from "gitlog";
 
 const options = {
   repo: __dirname + "/test-repo-folder",
@@ -21,22 +21,7 @@ const options = {
   execOptions: { maxBuffer: 1000 * 1024 },
 };
 
-// Synchronous
-const commits = gitlog(options);
-console.log(commits);
-
-// Asynchronous (with Callback)
-gitlog(options, function (error, commits) {
-  // Commits is an array of commits in the repo
-  console.log(commits);
-});
-
-const { gitlogPromise } = require("gitlog");
-
-// Asynchronous (with Promise)
-gitlogPromise(options)
-  .then((commits) => console.log(commits))
-  .catch((err) => console.log(err));
+const commits = await gitlogPromise(options);
 ```
 
 `gitlog` comes with full typescript support!
