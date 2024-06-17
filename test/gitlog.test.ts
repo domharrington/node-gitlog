@@ -6,7 +6,11 @@ import gitlog from "../src";
 const testRepoLocation = `${os.tmpdir()}/test-repo-clone`;
 
 function execInTmpDir(command: string) {
-  execSync(command, { cwd: os.tmpdir(), stdio: "ignore" });
+  try {
+    execSync(command, { cwd: os.tmpdir(), stdio: "ignore" });
+  } catch (e) {
+    console.error("Error with execSync", e);
+  }
 }
 
 describe("gitlog", () => {
