@@ -177,9 +177,8 @@ const parseCommits = <T extends string>(
       }
 
       // Split each line into it's own delimited array
-      const nameAndStatusDelimited = parseNameStatus.map((d) =>
-        d.split(delimiter)
-      );
+      // Using tab character here because the name status output is always tab separated
+      const nameAndStatusDelimited = parseNameStatus.map((d) => d.split("\t"));
 
       // 0 will always be status, last will be the filename as it is in the commit,
       // anything in between could be the old name if renamed or copied
