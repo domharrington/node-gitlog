@@ -1,5 +1,4 @@
 import fs from "fs";
-import os from "os";
 import { execSync } from "child_process";
 import gitlog from "../src";
 
