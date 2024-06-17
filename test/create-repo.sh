@@ -3,13 +3,13 @@ REPO="test-repo.git"
 echo $REPO
 mkdir $REPO
 cd $REPO
+git config --local user.email "you@example.com"
+git config --local user.name "Your Name"
+git config --local init.defaultbranch main
 git init --bare
 cd ..
 git clone -l $REPO test-repo-clone
 cd test-repo-clone
-git config --local user.email "you@example.com"
-git config --local user.name "Your Name"
-git config --local init.defaultbranch main
 
 # Add
 for i in {1..16}
