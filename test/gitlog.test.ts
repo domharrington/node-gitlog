@@ -1,8 +1,6 @@
-/* eslint-disable handle-callback-err, no-unused-expressions */
-
 import fs from "fs";
-import { exec, execSync } from "child_process";
-import gitlog, { gitlogPromise } from "../src";
+import { execSync } from "child_process";
+import gitlog from "../src";
 
 const testRepoLocation = `${__dirname}/test-repo-clone`;
 
@@ -16,116 +14,100 @@ describe("gitlog", () => {
     execInTestDir(`${__dirname}/create-repo.sh`);
   });
 
-  it("throws an error when repo is not provided", () => {
-    // @ts-ignore
-    expect(() => gitlog({})).toThrow("Repo required!");
+  afterAll(() => {
+    execInTestDir(`${__dirname}/delete-repo.sh`);
   });
 
-  it("throws an error when repo location does not exist", () => {
-    expect(() => gitlog({ repo: "wrong directory" })).toThrow(
+  it("throws an error when repo is not provided", async () => {
+    // @ts-ignore
+    await expect(() => gitlog({})).rejects.toThrow("Repo required!");
+  });
+
+  it("throws an error when repo location does not exist", async () => {
+    await expect(() => gitlog({ repo: "wrong directory" })).rejects.toThrow(
       "Repo location does not exist"
     );
   });
 
-  it("throws an error when an unknown field is used", () => {
+  it("throws an error when an unknown field is used", async () => {
     const field = "fake-field";
 
-    // @ts-ignore
-    expect(() => gitlog({ repo: testRepoLocation, fields: [field] })).toThrow(
-      `Unknown field: ${field}`
-    );
+    await expect(() =>
+      // @ts-ignore
+      gitlog({ repo: testRepoLocation, fields: [field] })
+    ).rejects.toThrow(`Unknown field: ${field}`);
   });
 
-  it("throws an error when bad option - promise", async () => {
+  it("throws an error when bad option", async () => {
     await expect(
-      gitlogPromise({ repo: testRepoLocation, branch: "not-a-branch" })
-    ).rejects.toBeInstanceOf(Error);
-  });
-
-  it("returns 21 commits from specified branch", (done) => {
-    gitlog(
-      { repo: testRepoLocation, branch: "new-branch", number: 100 },
-      (err, commits) => {
-        expect(err).toBeNull();
-        expect(commits.length).toBe(21);
-        done();
-      }
+      gitlog({ repo: testRepoLocation, branch: "not-a-branch" })
+    ).rejects.toThrow(
+      "fatal: ambiguous argument 'not-a-branch': unknown revision or path not in the working tree"
     );
   });
 
-  it("returns 1 commit from specified revision range", (done) => {
-    gitlog(
-      { repo: testRepoLocation, branch: "master..new-branch", number: 100 },
-      (err, commits) => {
-        expect(err).toBeNull();
-        expect(commits.length).toBe(1);
-        expect(commits[0].subject).toBe("Added new file on new branch");
-        done();
-      }
-    );
-  });
-
-  it("returns 25 commits from repository with all=false", (done) => {
-    gitlog(
-      { repo: testRepoLocation, all: false, number: 100 },
-      (err, commits) => {
-        expect(err).toBeNull();
-        expect(commits.length).toBe(25);
-        done();
-      }
-    );
-  });
-
-  it("returns 26 commits from repository with all=true", (done) => {
-    gitlog(
-      { repo: testRepoLocation, all: true, number: 100 },
-      (err, commits) => {
-        expect(err).toBeNull();
-        expect(commits.length).toBe(26);
-        done();
-      }
-    );
-  });
-
-  it("defaults to 10 commits - callback", (done) => {
-    gitlog({ repo: testRepoLocation }, (err, commits) => {
-      expect(err).toBeNull();
-      expect(commits.length).toBe(10);
-      done();
+  it("returns 21 commits from specified branch", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      branch: "new-branch",
+      number: 100,
     });
+    expect(commits.length).toBe(21);
   });
 
-  it("defaults to 10 commits - promise", async () => {
-    const commits = await gitlogPromise({ repo: testRepoLocation });
+  it("returns 1 commit from specified revision range", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      branch: "main..new-branch",
+      number: 100,
+    });
+    expect(commits.length).toBe(1);
+    expect(commits[0].subject).toBe("Added new file on new branch");
+  });
+
+  it("returns 25 commits from repository with all=false", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      all: false,
+      number: 100,
+    });
+    expect(commits.length).toBe(25);
+  });
+
+  it("returns 26 commits from repository with all=true", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      all: true,
+      number: 100,
+    });
+    expect(commits.length).toBe(26);
+  });
+
+  it("defaults to 10 commits", async () => {
+    const commits = await gitlog({ repo: testRepoLocation });
     expect(commits.length).toBe(10);
   });
 
-  it("returns 10 commits from other dir, execOptions specified", (done) => {
+  it("returns 10 commits from other dir, execOptions specified", async () => {
     const cwd = process.cwd();
     process.chdir("/tmp");
-    gitlog(
-      { repo: testRepoLocation, execOptions: { encoding: "utf8" } },
-      (err, commits) => {
-        expect(err).toBeNull();
-        expect(commits.length).toBe(10);
-        done();
-      }
-    );
-    process.chdir(cwd);
-  });
-
-  it("returns 10 commits from other dir", (done) => {
-    const cwd = process.cwd();
-    process.chdir("/tmp");
-    gitlog({ repo: testRepoLocation }, (err, commits) => {
-      expect(err).toBeNull();
-      expect(commits.length).toBe(10);
-      done();
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      execOptions: { encoding: "utf8" },
     });
+    expect(commits.length).toBe(10);
     process.chdir(cwd);
   });
 
-  it("returns the fields requested", () => {
+  it("returns 10 commits from other dir", async () => {
+    const cwd = process.cwd();
+    process.chdir("/tmp");
+    const commits = await gitlog({ repo: testRepoLocation });
+    expect(commits.length).toBe(10);
+    process.chdir(cwd);
+  });
+
+  it("returns the fields requested", async () => {
     const fields = [
       "hash",
       "abbrevHash",
@@ -134,7 +116,7 @@ describe("gitlog", () => {
       "authorEmail",
     ] as const;
 
-    const commits = gitlog({
+    const commits = await gitlog({
       repo: testRepoLocation,
       fields,
       nameStatus: false,
@@ -147,8 +129,8 @@ describe("gitlog", () => {
     expect(commits[0].treeHash).toBeDefined();
   });
 
-  it("returns a default set of fields", () => {
-    const commits = gitlog({ repo: testRepoLocation, nameStatus: false });
+  it("returns a default set of fields", async () => {
+    const commits = await gitlog({ repo: testRepoLocation, nameStatus: false });
 
     expect(commits[0].abbrevHash).toBeDefined();
     expect(commits[0].subject).toBeDefined();
@@ -160,86 +142,103 @@ describe("gitlog", () => {
     expect(commits[0].files).not.toBeDefined();
   });
 
-  it('returns fields with "since" limit', () => {
-    const commits = gitlog({ repo: testRepoLocation, since: "1 minutes ago" });
+  it('returns fields with "since" limit', async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      since: "1 minutes ago",
+    });
     expect(commits).toHaveLength(10);
   });
 
-  it('returns fields with "after" limit', () => {
-    const commits = gitlog({ repo: testRepoLocation, after: "1 minutes ago" });
+  it('returns fields with "after" limit', async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      after: "1 minutes ago",
+    });
     expect(commits).toHaveLength(10);
   });
 
-  it('returns fields with "before" limit', () => {
-    const commits = gitlog({ repo: testRepoLocation, before: "2001-12-01" });
+  it('returns fields with "before" limit', async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      before: "2001-12-01",
+    });
     expect(commits).toHaveLength(0);
   });
 
-  it('returns fields with "until" limit', () => {
-    const commits = gitlog({ repo: testRepoLocation, until: "2001-12-01" });
+  it('returns fields with "until" limit', async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      until: "2001-12-01",
+    });
     expect(commits).toHaveLength(0);
   });
 
-  it("returns commits only by author", (done) => {
+  it("returns commits only by author", async () => {
     const defaults = ["authorName"] as const;
     const command =
       `cd ${testRepoLocation}` +
-      `&& touch new-file` +
-      `&& git add new-file` +
-      `&& git commit -m "New commit" --author="A U Thor <author@example.com>"`;
+      `&& touch new-file-author ` +
+      `&& git add new-file-author ` +
+      `&& git commit -m "New commit"`;
     const author = "Your Name";
 
     // Adding a new commit by different author
-    exec(command, () => {
-      const commits = gitlog({
-        repo: testRepoLocation,
-        author,
-        fields: defaults,
-      });
+    execSync(command, {
+      env: {
+        GIT_AUTHOR_NAME: "A U Thor",
+        GIT_AUTHOR_EMAIL: "author@example.com",
+      },
+    });
 
-      expect.assertions(10);
-      commits.forEach((commit) => {
-        expect(commit.authorName).toBe(author);
-      });
-
-      done();
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      author,
+      fields: defaults,
+    });
+    expect.assertions(10);
+    commits.forEach((commit) => {
+      expect(commit.authorName).toBe(author);
     });
   });
 
-  it("returns commits only by committer", (done) => {
+  it("returns commits only by committer", async () => {
     const defaults = ["committerName"] as const;
     const command =
       `cd ${testRepoLocation} ` +
-      `&& touch new-file ` +
-      `&& git add new-file ` +
-      `&& git commit -m "New commit" ` +
-      `--committer="A U Thor <author@example.com>"`;
+      `&& touch new-file-1 ` +
+      `&& git add new-file-1 ` +
+      `&& git commit -am "New commit"`;
     const committer = "Your Name";
 
-    // Adding a new commit by different author
-    exec(command, () => {
-      const commits = gitlog({
-        repo: testRepoLocation,
-        committer,
-        fields: defaults,
-      });
+    execSync(command, {
+      env: {
+        GIT_COMMITTER_NAME: "A U Thor",
+        GIT_COMMITTER_EMAIL: "author@example.com",
+      },
+    });
 
-      expect.assertions(10);
-      commits.forEach((commit) => {
-        expect(commit.committerName).toBe(committer);
-      });
-
-      done();
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      committer,
+      fields: defaults,
+    });
+    expect.assertions(10);
+    commits.forEach((commit) => {
+      expect(commit.committerName).toBe(committer);
     });
   });
 
-  it("returns C100 status for files that are copied", () => {
-    const commits = gitlog({ repo: testRepoLocation, findCopiesHarder: true });
+  it("returns C100 status for files that are copied", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      findCopiesHarder: true,
+    });
     expect(commits[4].status[0]).toBe("C100");
   });
 
-  it("returns merge commits files when includeMergeCommitFiles is true", () => {
-    const commits = gitlog({
+  it("returns merge commits files when includeMergeCommitFiles is true", async () => {
+    const commits = await gitlog({
       repo: testRepoLocation,
       includeMergeCommitFiles: true,
     });
@@ -248,8 +247,8 @@ describe("gitlog", () => {
 
   describe("Only repo option", () => {
     let commits: any[];
-    beforeAll(() => {
-      commits = gitlog({ repo: testRepoLocation });
+    beforeAll(async () => {
+      commits = await gitlog({ repo: testRepoLocation });
     });
 
     it("returns nameStatus fields", () => {
@@ -284,7 +283,7 @@ describe("gitlog", () => {
   // This fails inconsistently on different versions of git
   // https://github.com/domharrington/node-gitlog/issues/24
   //
-  // it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function(done) {
+  // it('returns R100 & D status for files that are renamed (100 is % of similarity) or A', function() {
   //   gitlog({ repo: testRepoLocation, number: 100 }, function(err, commits) {
   //     if (semver.gte(gitVer, '2.0.0')){
   //       commits[5].status[0].should.equal('R100')
@@ -296,8 +295,8 @@ describe("gitlog", () => {
   //   })
   // })
 
-  it("should allow both body and rawBody", () => {
-    const commits = gitlog({
+  it("should allow both body and rawBody", async () => {
+    const commits = await gitlog({
       repo: testRepoLocation,
       fields: ["body", "rawBody"],
     });
@@ -306,8 +305,8 @@ describe("gitlog", () => {
     expect(commits[0].rawBody).toBeDefined();
   });
 
-  it("should be able to get commit counts for a specific line only", () => {
-    const commitsForFirstLine = gitlog({
+  it("should be able to get commit counts for a specific line only", async () => {
+    const commitsForFirstLine = await gitlog({
       repo: testRepoLocation,
       fileLineRange: {
         file: "fileToModify",
@@ -316,7 +315,7 @@ describe("gitlog", () => {
       },
     });
     expect(commitsForFirstLine.length).toBe(1);
-    const commitsForLastLine = gitlog({
+    const commitsForLastLine = await gitlog({
       repo: testRepoLocation,
       fileLineRange: {
         file: "fileToModify",
@@ -327,24 +326,20 @@ describe("gitlog", () => {
     expect(commitsForLastLine.length).toBe(3);
   });
 
-  it("should not execute shell commands", (done) => {
-    gitlog(
-      {
+  it("should not execute shell commands", async () => {
+    await expect(
+      gitlog({
         repo: testRepoLocation,
         branch: "$(touch ../exploit)",
-      },
-      () => {
-        const exists = fs.existsSync("./test/exploit");
-        expect(exists).toBe(false);
-        if (exists) {
-          fs.unlinkSync("./test/exploit");
-        }
-        done();
-      }
+      })
+    ).rejects.toThrow(
+      "fatal: ambiguous argument '$(touch ../exploit)': unknown revision or path not in the working tree."
     );
-  });
 
-  afterAll(() => {
-    execInTestDir(`${__dirname}/delete-repo.sh`);
+    const exists = fs.existsSync("./test/exploit");
+    expect(exists).toBe(false);
+    if (exists) {
+      fs.unlinkSync("./test/exploit");
+    }
   });
 });

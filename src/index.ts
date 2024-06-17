@@ -1,13 +1,14 @@
 import {
   execFile,
-  execFileSync,
   ExecFileSyncOptions,
-  ExecException,
-} from "child_process";
+  ExecFileException,
+} from "node:child_process";
+import { promisify } from "node:util";
 import { existsSync } from "fs";
 import createDebugger from "debug";
 
 const debug = createDebugger("gitlog");
+const execFilePromise = promisify(execFile);
 
 const delimiter = "\t";
 const fieldMap = {
@@ -33,7 +34,7 @@ const fieldMap = {
 export type CommitField = keyof typeof fieldMap;
 
 const notOptFields = ["status", "files"] as const;
-type NotOptField = typeof notOptFields[number];
+type NotOptField = (typeof notOptFields)[number];
 
 export interface FileLineRange {
   /** Will be pass as -L <startLine>,<endLine>:<file> */
@@ -56,7 +57,7 @@ const defaultFields = [
   "authorName",
   "authorDate",
 ] as const;
-type DefaultField = typeof defaultFields[number];
+type DefaultField = (typeof defaultFields)[number];
 
 export interface GitlogOptions<Fields extends string = DefaultField> {
   /** The location of the repo */
@@ -306,7 +307,7 @@ function createCommandArguments<
   return command;
 }
 
-type GitlogError = ExecException | null;
+type GitlogError = ExecFileException | null;
 
 type CommitBase<Field extends string> = Record<Field, string>;
 type CommitBaseWithFiles<Field extends string> = Record<
@@ -326,18 +327,15 @@ function gitlog<Field extends CommitField = DefaultField>(
 
 function gitlog<Field extends CommitField = DefaultField>(
   userOptions: GitlogOptions<Field> & { nameStatus: false }
-): CommitBase<Field>[];
+): Promise<CommitBase<Field>[]>;
 
 function gitlog<Field extends CommitField = DefaultField>(
   userOptions: GitlogOptions<Field>
-): CommitBaseWithFiles<Field>[];
+): Promise<CommitBaseWithFiles<Field>[]>;
 
-function gitlog<Field extends CommitField = DefaultField>(
-  userOptions: GitlogOptions<Field>,
-  cb?:
-    | ((err: GitlogError, commits: CommitBase<Field>[]) => void)
-    | ((err: GitlogError, commits: CommitBaseWithFiles<Field>[]) => void)
-): CommitBase<Field>[] | CommitBaseWithFiles<Field>[] | void {
+async function gitlog<Field extends CommitField = DefaultField>(
+  userOptions: GitlogOptions<Field>
+): Promise<CommitBase<Field>[] | CommitBaseWithFiles<Field>[] | void> {
   if (!userOptions.repo) {
     throw new Error("Repo required!");
   }
@@ -354,60 +352,19 @@ function gitlog<Field extends CommitField = DefaultField>(
   const execOptions = { cwd: userOptions.repo, ...userOptions.execOptions };
   const commandArguments = createCommandArguments(options);
 
-  if (!cb) {
-    const stdout = execFileSync(
-      "git",
-      commandArguments,
-      execOptions
-    ).toString();
-    const commits = stdout.split("@begin@");
+  const { stdout } = await execFilePromise(
+    "git",
+    commandArguments,
+    execOptions
+  );
+  const commits = stdout.split("@begin@");
 
-    if (commits[0] === "") {
-      commits.shift();
-    }
-
-    debug("commits", commits);
-    return parseCommits(commits, options.fields, options.nameStatus);
+  if (commits[0] === "") {
+    commits.shift();
   }
 
-  execFile("git", commandArguments, execOptions, (err, stdout, stderr) => {
-    debug("stdout", stdout);
-    const commits = stdout.split("@begin@");
-
-    if (commits[0] === "") {
-      commits.shift();
-    }
-
-    debug("commits", commits);
-
-    if (stderr) {
-      err = new Error(stderr);
-    }
-
-    cb(err, parseCommits(commits, options.fields, options.nameStatus));
-  });
-}
-
-export function gitlogPromise<Field extends CommitField = DefaultField>(
-  options: GitlogOptions<Field> & { nameStatus: false }
-): Promise<CommitBase<Field>[]>;
-
-export function gitlogPromise<Field extends CommitField = DefaultField>(
-  options: GitlogOptions<Field>
-): Promise<CommitBaseWithFiles<Field>[]>;
-
-export function gitlogPromise<Field extends CommitField = DefaultField>(
-  options: GitlogOptions<Field>
-): Promise<CommitBase<Field>[]> {
-  return new Promise((resolve, reject) => {
-    gitlog(options, (err, commits) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(commits);
-      }
-    });
-  });
+  debug("commits", commits);
+  return parseCommits(commits, options.fields, options.nameStatus);
 }
 
 export default gitlog;

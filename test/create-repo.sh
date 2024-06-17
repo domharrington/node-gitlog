@@ -9,6 +9,7 @@ git clone -l $REPO test-repo-clone
 cd test-repo-clone
 git config --local user.email "you@example.com"
 git config --local user.name "Your Name"
+git config --local init.defaultbranch main
 
 # Add
 for i in {1..16}
@@ -47,14 +48,14 @@ git checkout -b new-branch
 touch new-file
 git add new-file
 git commit -m "Added new file on new branch"
-git checkout master
+git checkout main
 
 # Merge commit
 git checkout -b new-merge-branch
 touch foo
 git add foo
 git commit -m "Commit to be merged"
-git checkout master
+git checkout main
 git merge --no-edit --no-ff new-merge-branch
 git branch -d new-merge-branch
 
