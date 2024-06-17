@@ -6,7 +6,7 @@ const testRepoLocation = `${__dirname}/test-repo-clone`;
 
 function execInTmpDir(command: string) {
   try {
-    execSync(command, { cwd: __dirname, stdio: "ignore" });
+    execSync(command, { cwd: __dirname, stdio: "inherit" });
   } catch (e) {
     console.error("Error with execSync", e);
   }
