@@ -10,7 +10,7 @@ import createDebugger from "debug";
 const debug = createDebugger("gitlog");
 const execFilePromise = promisify(execFile);
 
-const delimiter = "\t";
+const delimiter = "\x1E";
 const fieldMap = {
   hash: "%H",
   abbrevHash: "%h",
