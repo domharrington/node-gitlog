@@ -4,7 +4,7 @@ REPO="test-repo.git"
 echo $REPO
 mkdir $REPO
 cd $REPO
-git config --local init.defaultbranch main
+git config --global init.defaultbranch main
 git init --bare
 cd ..
 git clone -l $REPO test-repo-clone
