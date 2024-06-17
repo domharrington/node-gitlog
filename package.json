@@ -10,7 +10,8 @@
     "pretest": "npm run lint",
     "test": "jest",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -24,8 +25,11 @@
   "author": "Dom Harrington <domharrington@protonmail.com>",
   "license": "BSD-3-Clause",
   "engines": {
-    "node": ">= 10.x"
+    "node": ">= 20.x"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@auto-it/all-contributors": "^10.46.0",
     "@auto-it/first-time-contributor": "^10.46.0",
@@ -49,5 +53,6 @@
       "all-contributors",
       "pr-body-labels"
     ]
-  }
+  },
+  "type": "module"
 }

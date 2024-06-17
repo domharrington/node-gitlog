@@ -21,7 +21,7 @@ const options = {
   execOptions: { maxBuffer: 1000 * 1024 },
 };
 
-const commits = await gitlogPromise(options);
+const commits = await gitlog(options);
 ```
 
 `gitlog` comes with full typescript support!
