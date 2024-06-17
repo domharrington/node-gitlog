@@ -1,21 +1,22 @@
 import fs from "fs";
+import os from "os";
 import { execSync } from "child_process";
 import gitlog from "../src";
 
-const testRepoLocation = `${__dirname}/test-repo-clone`;
+const testRepoLocation = `${os.tmpdir()}/test-repo-clone`;
 
-function execInTestDir(command: string) {
-  execSync(command, { cwd: __dirname, stdio: "ignore" });
+function execInTmpDir(command: string) {
+  execSync(command, { cwd: os.tmpdir(), stdio: "ignore" });
 }
 
 describe("gitlog", () => {
   beforeEach(() => {
-    execInTestDir(`${__dirname}/delete-repo.sh`);
-    execInTestDir(`${__dirname}/create-repo.sh`);
+    execInTmpDir(`${__dirname}/delete-repo.sh`);
+    execInTmpDir(`${__dirname}/create-repo.sh`);
   });
 
   afterAll(() => {
-    execInTestDir(`${__dirname}/delete-repo.sh`);
+    execInTmpDir(`${__dirname}/delete-repo.sh`);
   });
 
   it("throws an error when repo is not provided", async () => {
