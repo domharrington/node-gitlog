@@ -343,4 +343,19 @@ describe("gitlog", () => {
       fs.unlinkSync("./test/exploit");
     }
   });
+
+  it("should support tabs in commit messages", async () => {
+    const command =
+      `cd ${testRepoLocation}` +
+      `&& git commit --allow-empty -m "this\t\message\tcontains\ttabs"`;
+
+    // Adding a new commit by different author
+    execSync(command);
+    const [commit] = await gitlog({
+      repo: testRepoLocation,
+      number: 1,
+    });
+
+    expect(commit.subject).toBe("this\tmessage\tcontains\ttabs");
+  });
 });
