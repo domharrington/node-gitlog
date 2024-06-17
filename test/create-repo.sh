@@ -70,10 +70,21 @@ for i in {1..20}
   done
 git add fileToModify
 git commit -m "added long content file"
-sed -i '' -e 's/2/4/g' ./fileToModify
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' -e 's/2/4/g' ./fileToModify
+else
+  sed -i -e 's/2/4/g' ./fileToModify
+fi
+
 git add fileToModify
 git commit -m "Modify multiple parts of the file and come close to, but not the first line"
-sed -i '' -e 's/40/44/' ./fileToModify
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' -e 's/40/44/' ./fileToModify
+else
+  sed -i -e 's/40/44/' ./fileToModify
+fi
 git add fileToModify
 git commit -m "Modify end of the file"
 
