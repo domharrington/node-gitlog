@@ -39,8 +39,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "debug": "^4.1.1",
-    "tslib": "^2.5.0"
+    "debug": "^4.1.1"
   },
   "auto": {
     "plugins": [
