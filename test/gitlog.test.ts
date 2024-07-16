@@ -260,7 +260,7 @@ describe("gitlog", () => {
       expect(commits[0].subject).toBeDefined();
       expect(commits[0].authorName).toBeDefined();
       expect(commits[0].hash).toBeDefined();
-      expect(commits[0].status).toBeDefined();
+      expect(commits[0].status).toBeInstanceOf(Array);
       expect(commits[0].files).toBeDefined();
     });
 
