@@ -213,6 +213,26 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "jigarzon",
+      "name": "Juan Ignacio Garzón",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9467722?v=4",
+      "profile": "https://www.linkedin.com/in/juanignaciogarzon/",
+      "contributions": [
+        "doc",
+        "code"
+      ]
+    },
+    {
+      "login": "vlovich",
+      "name": "Vitali Lovich",
+      "avatar_url": "https://avatars.githubusercontent.com/u/201287?v=4",
+      "profile": "https://github.com/vlovich",
+      "contributions": [
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

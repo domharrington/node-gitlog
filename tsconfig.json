@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
-    "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
     "rootDir": "./src",
@@ -23,6 +22,7 @@
     "paths": {
       "*": ["src/*", "node_modules/*"]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "./dist"
   }
 }

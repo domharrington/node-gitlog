@@ -2,9 +2,6 @@
 
 Git log parser for Node.JS
 
-[![build status](https://api.travis-ci.org/domharrington/node-gitlog.svg)](http://travis-ci.org/domharrington/node-gitlog)
-[![dependency status](https://david-dm.org/domharrington/node-gitlog.svg)](https://david-dm.org/domharrington/node-gitlog)
-
 ## Installation
 
 ```sh
@@ -14,7 +11,7 @@ npm install gitlog --save
 ## Usage
 
 ```js
-const gitlog = require("gitlog").default;
+import gitlog from "gitlog";
 
 const options = {
   repo: __dirname + "/test-repo-folder",
@@ -24,22 +21,7 @@ const options = {
   execOptions: { maxBuffer: 1000 * 1024 },
 };
 
-// Synchronous
-const commits = gitlog(options);
-console.log(commits);
-
-// Asynchronous (with Callback)
-gitlog(options, function (error, commits) {
-  // Commits is an array of commits in the repo
-  console.log(commits);
-});
-
-const { gitlogPromise } = require("gitlog");
-
-// Asynchronous (with Promise)
-gitlogPromise(options)
-  .then((commits) => console.log(commits))
-  .catch((err) => console.log(err));
+const commits = await gitlog(options);
 ```
 
 `gitlog` comes with full typescript support!
@@ -246,6 +228,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://huntr.dev/"><img src="https://avatars0.githubusercontent.com/u/61279246?v=4?s=100" width="100px;" alt=""/><br /><sub><b>huntr-helper</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=huntr-helper" title="Code">💻</a></td>
     <td align="center"><a href="https://salmonmode.github.io/"><img src="https://avatars3.githubusercontent.com/u/13908130?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chris NeJame</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Documentation">📖</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Tests">⚠️</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=SalmonMode" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ron-checkmarx"><img src="https://avatars2.githubusercontent.com/u/67099202?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ron</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=ron-checkmarx" title="Tests">⚠️</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=ron-checkmarx" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://www.linkedin.com/in/juanignaciogarzon/"><img src="https://avatars.githubusercontent.com/u/9467722?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Juan Ignacio Garzón</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=jigarzon" title="Documentation">📖</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=jigarzon" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/vlovich"><img src="https://avatars.githubusercontent.com/u/201287?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vitali Lovich</b></sub></a><br /><a href="https://github.com/domharrington/node-gitlog/commits?author=vlovich" title="Tests">⚠️</a> <a href="https://github.com/domharrington/node-gitlog/commits?author=vlovich" title="Code">💻</a></td>
   </tr>
 </table>
 

@@ -1,8 +1,10 @@
 #!/bin/bash
+set -e
 REPO="test-repo.git"
 echo $REPO
 mkdir $REPO
 cd $REPO
+git config --global init.defaultbranch main
 git init --bare
 cd ..
 git clone -l $REPO test-repo-clone
@@ -47,14 +49,14 @@ git checkout -b new-branch
 touch new-file
 git add new-file
 git commit -m "Added new file on new branch"
-git checkout master
+git checkout main
 
 # Merge commit
 git checkout -b new-merge-branch
 touch foo
 git add foo
 git commit -m "Commit to be merged"
-git checkout master
+git checkout main
 git merge --no-edit --no-ff new-merge-branch
 git branch -d new-merge-branch
 
@@ -68,10 +70,21 @@ for i in {1..20}
   done
 git add fileToModify
 git commit -m "added long content file"
-sed -i '' -e 's/2/4/g' ./fileToModify
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' -e 's/2/4/g' ./fileToModify
+else
+  sed -i -e 's/2/4/g' ./fileToModify
+fi
+
 git add fileToModify
 git commit -m "Modify multiple parts of the file and come close to, but not the first line"
-sed -i '' -e 's/40/44/' ./fileToModify
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' -e 's/40/44/' ./fileToModify
+else
+  sed -i -e 's/40/44/' ./fileToModify
+fi
 git add fileToModify
 git commit -m "Modify end of the file"
 
