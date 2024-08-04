@@ -249,6 +249,23 @@ describe("gitlog", () => {
     expect(commits[3].files[0]).toBe("foo");
   });
 
+  it("doesn't return commits for renamed files when follow is false or undefined", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      file: "1-fileRename",
+    });
+    expect(commits.length).toBe(2);
+  });
+
+  it("returns commits for renamed files when follow is true", async () => {
+    const commits = await gitlog({
+      repo: testRepoLocation,
+      file: "1-fileRename",
+      follow: true,
+    });
+    expect(commits.length).toBe(3);
+  });
+
   describe("Only repo option", () => {
     let commits: any[];
     beforeAll(async () => {

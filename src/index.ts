@@ -81,6 +81,12 @@ export interface GitlogOptions<Fields extends string = DefaultField> {
    */
   includeMergeCommitFiles?: boolean;
   /**
+   * Pass the -follow option to follow files across renames
+   *
+   * @default false
+   */
+  follow?: boolean;
+  /**
    * The number of commits to return
    *
    * @default 10
@@ -128,6 +134,7 @@ const defaultOptions = {
   fields: defaultFields,
   nameStatus: true,
   includeMergeCommitFiles: false,
+  follow: false,
   findCopiesHarder: false,
   all: false,
 };
@@ -256,6 +263,10 @@ function createCommandArguments<
 
   if (options.includeMergeCommitFiles) {
     command.push("-m");
+  }
+
+  if (options.follow) {
+    command.push("--follow");
   }
 
   command.push(`-n ${options.number}`);
