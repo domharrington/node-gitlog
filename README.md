@@ -107,7 +107,7 @@ This option is disabled by default.
 
 ### follow
 
-Pass the -follow option to follow files across renames.
+Pass the --follow option to follow files across renames.
 
 This option is disabled by default.
 
