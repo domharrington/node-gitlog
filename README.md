@@ -105,6 +105,12 @@ Pass the `-m` option to includes files in a merge commit.
 
 This option is disabled by default.
 
+### follow
+
+Pass the --follow option to follow files across renames.
+
+This option is disabled by default.
+
 ### all
 
 Find commits on all branches instead of just on the current one.
